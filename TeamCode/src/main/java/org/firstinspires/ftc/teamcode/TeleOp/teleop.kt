@@ -27,6 +27,7 @@ import org.firstinspires.ftc.teamcode.Systems.claws.claws_vars.lclawOpenPos
 import org.firstinspires.ftc.teamcode.Systems.claws.claws_vars.rclawClosePos
 import org.firstinspires.ftc.teamcode.Systems.claws.claws_vars.rclawOpenPos
 import org.firstinspires.ftc.teamcode.Systems.colorsensor.ColorSensor
+import org.firstinspires.ftc.teamcode.Systems.drivetrain.Drivetrain
 import org.firstinspires.ftc.teamcode.Systems.intake.Intake
 import org.firstinspires.ftc.teamcode.Systems.intake.intake_vars.lidClosePos
 import org.firstinspires.ftc.teamcode.Systems.intake.intake_vars.lidOpenPos
@@ -269,10 +270,11 @@ class teleopHAIDEEEEEEEEE: LinearOpMode(){
 class teleopcapac: LinearOpMode(){
 
     override fun runOpMode() {
-        init_teleop(this)
+        //init_teleop(this)
+        drivetrain = Drivetrain()
         while(!isStopRequested){
+            drivetrain.gm0drive()
         }
-
     }
 
 }

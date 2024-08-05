@@ -335,6 +335,10 @@ class pipeline0: OpenCvPipeline(){
         frame.copyTo(ff)
         for(i in 0 .. 640 step squaresize){
             for(j in 0 .. 480 step squaresize){
+                val patratul = frame[i, j] ?: continue
+                if(isRightColor(patratul)){
+
+                }
                 Imgproc.rectangle(
                     ff,
                     Rect(i, j, squaresize - 1, squaresize - 1),

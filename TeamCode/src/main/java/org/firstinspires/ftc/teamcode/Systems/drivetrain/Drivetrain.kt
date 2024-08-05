@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.Systems.drivetrain
 
 //import org.firstinspires.ftc.teamcode.Variables.system_funcs.batteryVoltageSensor
 import android.os.SystemClock.sleep
+import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorSimple
 import org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.gamepad1
 import org.firstinspires.ftc.teamcode.Algorithms.PIDF
@@ -18,30 +19,23 @@ import java.lang.Math.max
 
 class Drivetrain {
 
-    //private val leftParallelEncoder = hardwareMap.dcMotor.get("RB")
-    //private val rightParallelEncoder = hardwareMap.dcMotor.get("LF")
-    //private val perpendicularEncoder = hardwareMap.dcMotor.get("INTAKE")
-
     private val lbmotor = hardwareMap.dcMotor.get("LB")
     private val lfmotor = hardwareMap.dcMotor.get("LF")
     private val rbmotor = hardwareMap.dcMotor.get("RB")
     private val rfmotor = hardwareMap.dcMotor.get("RF")
 
-//    private val anglepid = PIDF(anglepidcoef)
 
 
     fun init(){
-      //  leftParallelEncoder.mode = DcMotor.RunMode.RUN_USING_ENCODER
-       // rightParallelEncoder.mode = DcMotor.RunMode.RUN_USING_ENCODER
-       // perpendicularEncoder.mode = DcMotor.RunMode.RUN_USING_ENCODER
-       // lbmotor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
-       // lbmotor.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
-       // lfmotor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
-        //lfmotor.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
-        //rbmotor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
-        //rbmotor.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
-        //rfmotor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
-        //rfmotor.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
+
+        lbmotor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
+        lbmotor.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
+        lfmotor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
+        lfmotor.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
+        rbmotor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
+        rbmotor.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
+        rfmotor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
+        rfmotor.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
     }
 
 
