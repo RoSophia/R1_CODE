@@ -27,7 +27,6 @@ class Drivetrain {
 
 
     fun init(){
-
         lbmotor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
         lbmotor.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
         lfmotor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
