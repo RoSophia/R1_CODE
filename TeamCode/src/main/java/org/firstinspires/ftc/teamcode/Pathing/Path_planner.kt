@@ -18,57 +18,6 @@ import org.firstinspires.ftc.teamcode.Variables.system_funcs.pp
 
 @Config
 object path_planner {
-    fun redlong(vals: red_long_vals): chain_actioner {
-        val trajectorystack = chain_actioner()
-        trajectorystack.addTrajectory(vals.StartPreload)
-                       .addAction({arm.goPreloadDown()}, {posdiff(arm.larm.position, larmPreload)})
-                       .addAction({claws.dropPreload()}, {posdiff(claws.lclaw.position, lclawOpenPos)})
-                       .addAction({arm.goUp()}, {posdiff(arm.larm.position, larmUp)})
-                       .addTrajectory(vals.PreloadBackDrop)
-                       .addAction({claws.dropPreloadBackdrop()}, {posdiff(claws.rclaw.position, rclawOpenPos)})
-                       .addTrajectory(vals.Park)
-        return trajectorystack
-    }
-
-    fun redshort(vals: red_short_vals): chain_actioner{
-        val trajectorystack = chain_actioner()
-        trajectorystack.addTrajectory(vals.StartPreload)
-            .addAction({arm.goPreloadDown()}, {posdiff(arm.larm.position, larmPreload)})
-            .addAction({claws.dropPreload()}, {posdiff(claws.lclaw.position, lclawOpenPos)})
-            .addAction({arm.goUp()}, {posdiff(arm.larm.position, larmUp)})
-            .addTrajectory(vals.PreloadBackDrop)
-            .addAction({claws.dropPreloadBackdrop()}, {posdiff(claws.rclaw.position, rclawOpenPos)})
-            .addTrajectory(vals.Park)
-
-        return trajectorystack
-    }
-
-    fun bluelong(vals: blue_long_vals): chain_actioner{
-        val trajectorystack = chain_actioner()
-        trajectorystack.addTrajectory(vals.StartPreload)
-            .addAction({arm.goPreloadDown()}, {posdiff(arm.larm.position, larmPreload)})
-            .addAction({claws.dropPreload()}, {posdiff(claws.lclaw.position, lclawOpenPos)})
-            .addAction({arm.goUp()}, {posdiff(arm.larm.position, larmUp)})
-            .addTrajectory(vals.PreloadBackDrop)
-            .addAction({claws.dropPreloadBackdrop()}, {posdiff(claws.rclaw.position, rclawOpenPos)})
-            .addTrajectory(vals.Park)
-
-        return trajectorystack
-    }
-
-    fun blueshort(vals: blue_short_vals): chain_actioner{
-        val trajectorystack = chain_actioner()
-        trajectorystack.addTrajectory(vals.StartPreload)
-            .addAction({arm.goPreloadDown()}, {posdiff(arm.larm.position, larmPreload)})
-            .addAction({claws.dropPreload()}, {posdiff(claws.lclaw.position, lclawOpenPos)})
-            .addAction({arm.goUp()}, {posdiff(arm.larm.position, larmUp)})
-            .addTrajectory(vals.PreloadBackDrop)
-            .addAction({claws.dropPreloadBackdrop()}, {posdiff(claws.rclaw.position, rclawOpenPos)})
-            .addTrajectory(vals.Park)
-
-        return trajectorystack
-    }
-
     fun test_linie(vals: test_linie): Command {
         return SequentialCommand(
             InstantCommand { pp.followtraj(vals.Liniuta)},

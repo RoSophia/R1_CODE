@@ -9,6 +9,7 @@ import org.firstinspires.ftc.teamcode.Algorithms.PIDF
 import org.firstinspires.ftc.teamcode.Algorithms.action
 import org.firstinspires.ftc.teamcode.Algorithms.chain_actioner
 import org.firstinspires.ftc.teamcode.Algorithms.color_detection
+import org.firstinspires.ftc.teamcode.Algorithms.quality_of_life_funcs.angDiff
 import org.firstinspires.ftc.teamcode.Algorithms.quality_of_life_funcs.autoupdate_tp
 import org.firstinspires.ftc.teamcode.CommandBase.commands
 import org.firstinspires.ftc.teamcode.Localizer.ThreeWheelLocalizer
@@ -36,6 +37,7 @@ import org.firstinspires.ftc.teamcode.Systems.slides.slides_vars.ltargetposition
 import org.firstinspires.ftc.teamcode.Systems.slides.slides_vars.rslideRange
 import org.firstinspires.ftc.teamcode.Systems.slides.slides_vars.rtargetposition
 import org.firstinspires.ftc.teamcode.Systems.slides.slides_vars.slideforce
+import org.firstinspires.ftc.teamcode.Variables.PIDCOEF
 import org.firstinspires.ftc.teamcode.Variables.PIDCoefs.pidcoefSlide
 import org.firstinspires.ftc.teamcode.Variables.system_funcs
 import org.firstinspires.ftc.teamcode.Variables.system_funcs.arm
@@ -49,6 +51,7 @@ import org.firstinspires.ftc.teamcode.Variables.system_funcs.imew
 import org.firstinspires.ftc.teamcode.Variables.system_funcs.init_teleop
 import org.firstinspires.ftc.teamcode.Variables.system_funcs.intake
 import org.firstinspires.ftc.teamcode.Variables.system_funcs.localizer
+import org.firstinspires.ftc.teamcode.Variables.system_funcs.lom
 import org.firstinspires.ftc.teamcode.Variables.system_funcs.slides
 import org.firstinspires.ftc.teamcode.Variables.system_funcs.telemetryPacket
 import org.firstinspires.ftc.teamcode.Variables.system_funcs.tp
@@ -58,6 +61,8 @@ import org.firstinspires.ftc.teamcode.Variables.system_vars.intakeInit
 import org.firstinspires.ftc.teamcode.Variables.system_vars.larmInit
 import org.firstinspires.ftc.teamcode.Variables.system_vars.rarmInit
 import org.firstinspires.ftc.teamcode.Variables.system_vars.trigtresh
+import kotlin.math.PI
+import kotlin.math.abs
 
 var isgoingup: Boolean = false
 var rpid: PIDF = PIDF(pidcoefSlide)
@@ -76,6 +81,7 @@ val chainactioner =  chain_actioner()
 var isgoingdown: Boolean = false
 var isgoinginit: Boolean = false
 var ishanging: Boolean = false
+var headingcorrectionpid = PIDF(PIDCOEF(0.0, 0.0, 0.0, 0.0))
 
 @TeleOp
 class testcumoneda: LinearOpMode(){
@@ -203,7 +209,7 @@ class teleopHAIDEEEEEEEEE: LinearOpMode(){
 
             //DRIVETRAIN
            // drivetrain.dummydriverobotcentric()
-            drivetrain.gm0drive()
+           // drivetrain.gm0drive()
 
             //IMEW RESET
             if(gamepad1.ps && !isresetting){
@@ -270,10 +276,22 @@ class teleopHAIDEEEEEEEEE: LinearOpMode(){
 class teleopcapac: LinearOpMode(){
 
     override fun runOpMode() {
-        //init_teleop(this)
+        init_teleop(this)
         drivetrain = Drivetrain()
+        var targetheading: Double = 0.0
+        var headingcorrectionpid = PIDF(PIDCOEF(0.0, 0.0, 0.0, 0.0))
         while(!isStopRequested){
-            drivetrain.gm0drive()
+            headingcorrectionpid.update(targetheading - imew.yaw)
+
+            drivetrain.autodrive(
+                Math.hypot(-gamepad1.left_stick_x.toDouble(), gamepad1.left_stick_y.toDouble() ),
+                -gamepad1.right_stick_x.toDouble() + headingcorrectionpid.update(angDiff(targetheading, imew.yaw)),
+                Math.atan2(gamepad1.left_stick_y.toDouble(), gamepad1.left_stick_x.toDouble()) - PI/4,
+                gamepad1.left_trigger.toDouble())
+
+            if(abs(gamepad1.right_stick_y) > 0.05){
+                targetheading = imew.yaw
+            }
         }
     }
 

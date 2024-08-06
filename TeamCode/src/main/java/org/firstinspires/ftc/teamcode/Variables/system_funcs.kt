@@ -24,6 +24,7 @@ import org.firstinspires.ftc.teamcode.Systems.slides.Slides
 import org.firstinspires.ftc.teamcode.Systems.ThreadedIMU
 import org.firstinspires.ftc.teamcode.Systems.camera.Pipeline
 import org.firstinspires.ftc.teamcode.Systems.camera.pipeline0
+import org.firstinspires.ftc.teamcode.Systems.colorsensor.ColorSensor
 //import org.firstinspires.ftc.teamcode.Systems.camera.Pipeline
 import org.firstinspires.ftc.teamcode.hardware.Controller
 import org.openftc.easyopencv.OpenCvCameraRotation
@@ -52,6 +53,7 @@ object system_funcs {
     var firstopen: Boolean = true
     lateinit var pp: purepursuit
     var currentcommand: Command? = null
+    lateinit var sensor: ColorSensor
 
     fun init_teleop(lom_real: LinearOpMode){
         lom = lom_real
@@ -82,9 +84,9 @@ object system_funcs {
         imew.initThread()
         telemetryPacket = TelemetryPacket()
 
-        init_systems()
-        pipeline = pipeline0()
-        camera = Camera("Webcam 1", OpenCvCameraRotation.UPRIGHT, 640, 480, pipeline, streaming = true, waitForOpen = true)
+       // init_systems()
+       // pipeline = pipeline0()
+       // camera = Camera("Webcam 1", OpenCvCameraRotation.UPRIGHT, 640, 480, pipeline, streaming = true, waitForOpen = true)
     }
 
     fun init_systems(){
@@ -100,7 +102,7 @@ object system_funcs {
         claws.initpos()
         arm = Arm()
         arm.init()
-
+        sensor = ColorSensor()
         slides = Slides()
     }
 

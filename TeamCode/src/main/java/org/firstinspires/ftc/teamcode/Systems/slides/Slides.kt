@@ -35,6 +35,21 @@ class Slides {
         lslide.power = -lom.gamepad2.right_stick_y.toDouble()
     }
 
+    fun up(){
+        rslide.power = -1.0
+        lslide.power = 1.0
+    }
+
+    fun down(){
+        rslide.power = 1.0
+        lslide.power = -1.0
+    }
+
+    fun stop(){
+        rslide.power = 0.0
+        lslide.power = 0.0
+    }
+
     fun runwithpid(lpid: PIDF, rpid: PIDF){
         if(rtargetposition - rslide.currentPosition < tolerance && ltargetposition - lslide.currentPosition < tolerance){
             rslide.power = slideupForce

@@ -26,6 +26,9 @@ class Drivetrain {
     private val rfmotor = hardwareMap.dcMotor.get("RF")
 
     fun init(){
+        rbmotor.direction = DcMotorSimple.Direction.REVERSE
+        rfmotor.direction = DcMotorSimple.Direction.REVERSE
+
         lbmotor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
         lbmotor.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
         lfmotor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
@@ -59,32 +62,6 @@ class Drivetrain {
         }
     }
 
-    fun testing(){
-        var power = if(lom.gamepad1.left_stick_x != 0.0F) 1.0 else 0.0
-
-        lbmotor.power = power
-        rbmotor.power = power
-        rfmotor.power = power
-        lfmotor.power = power
-    }
-
-    fun dummydrive(){
-       // var slow = 1.0 - slowdown * 0.75
-        var heading = imew.yaw
-
-        var speed = -lom.gamepad1.left_stick_y
-        var strafe = -lom.gamepad1.left_stick_x
-        var turn = lom.gamepad1.right_stick_x
-
-        var fieldcentricspeed = speed*Math.cos(heading)-strafe*Math.sin(heading)
-        var fieldcentricstrafe = speed*Math.sin(heading)+strafe*Math.cos(heading)
-
-        lfmotor.power = (fieldcentricspeed + turn + fieldcentricstrafe)
-        rfmotor.power = -(fieldcentricspeed - turn + fieldcentricstrafe)
-        lbmotor.power = (fieldcentricspeed + turn - fieldcentricstrafe)
-        rbmotor.power = -(fieldcentricspeed - turn - fieldcentricstrafe)
-    }
-
     fun dummydriverobotcentric(){
         val y = -lom.gamepad1.left_stick_y // Remember, Y stick value is reversed
 
@@ -114,35 +91,21 @@ class Drivetrain {
         autoupdate_tp(tp, "merge trenu", "daaaaaaaa")
     }
 
-    fun autodrive(speed: Double, turn: Double, strafe: Double, heading: Double){
+    fun autodrive(speed: Double, turn: Double, heading: Double, slow: Double){
+
+        val slowdown = 1.0 - slow * 0.75
         val ms = speed * Math.sin(heading + imew.yaw)
         val mc = speed * Math.cos(heading + imew.yaw)
 
-        val lfPower = ms + turn + strafe
-        val rfPower = mc - turn - strafe
-        val lbPower = mc + turn - strafe
-        val rbPower = ms - turn + strafe
+        val lfPower = ms + turn
+        val rfPower = mc - turn
+        val lbPower = mc + turn
+        val rbPower = ms - turn
 
-        lfmotor.power = lfPower
-        rfmotor.power = -rfPower
-        lbmotor.power = lbPower
-        rbmotor.power = -rbPower
-    }
-
-    fun strafeleft(){
-        lfmotor.power = 1.0
-        rbmotor.power = -1.0
-        lbmotor.power = 1.0
-        lfmotor.power = -1.0
-        sleep(3000)
-    }
-
-    fun straferight(){
-        lfmotor.power = 1.0
-        rbmotor.power = -1.0
-        lbmotor.power = 1.0
-        lfmotor.power = -1.0
-        sleep(3000)
+        lfmotor.power = lfPower * equalizercoef * slowdown
+        rfmotor.power = rfPower * slowdown
+        lbmotor.power = lbPower * equalizercoef * slowdown
+        rbmotor.power = rbPower  * equalizercoef * slowdown
     }
 
     fun gm0drive(slow: Double){

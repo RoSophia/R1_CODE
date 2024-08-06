@@ -38,7 +38,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation
 
 object auto_funcs {
 
-    fun setupAuto(lom: LinearOpMode, isRed: Boolean, isShort: Boolean, path: Command?) {
+    fun setupAuto(lom: LinearOpMode, path: Command?) {
         init_teleop(lom)
         var runningcommand = path
         while (!lom.isStopRequested) {

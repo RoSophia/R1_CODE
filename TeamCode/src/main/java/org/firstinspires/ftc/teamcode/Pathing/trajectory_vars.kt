@@ -129,7 +129,77 @@ object blue_short_vals {
 }
 
 @Config
-object test_linie{
+object test_linie {
     @JvmField
     var Liniuta = Trajectory(Pose(0.0, 0.0, 0.0), Pose(100.0, 0.0, 2.0))
+}
+
+@Config
+object auto_trajectories{
+
+    //REDS
+    @JvmField
+    val Preload0Red = Trajectory(Pose(), Pose())
+    @JvmField
+    val Preload1Red = Trajectory(Pose(), Pose())
+    @JvmField
+    val Preload2Red = Trajectory(Pose(), Pose())
+
+    @JvmField
+    val PreloadtoBack0Red = Trajectory(Pose(), Pose())
+    @JvmField
+    val PreloadtoBack1Red = Trajectory(Pose(), Pose())
+    @JvmField
+    val PreloadtoBack2Red = Trajectory(Pose(), Pose())
+
+    private val preloadSet0Red = PreloadTrajectorySet(Preload0Red, PreloadtoBack0Red)
+    private val preloadSet1Red = PreloadTrajectorySet(Preload1Red, PreloadtoBack1Red)
+    private  val preloadSet2Red = PreloadTrajectorySet(Preload2Red, PreloadtoBack2Red)
+
+    private val redpreloads = Vector3Trajectories(preloadSet0Red, preloadSet1Red, preloadSet2Red)
+
+    //BLUES
+    @JvmField
+    val Preload0Blue = Trajectory(Pose(), Pose())
+    @JvmField
+    val Preload1Blue = Trajectory(Pose(), Pose())
+    @JvmField
+    val Preload2Blue = Trajectory(Pose(), Pose())
+
+    @JvmField
+    val PreloadtoBack0Blue = Trajectory(Pose(), Pose())
+    @JvmField
+    val PreloadtoBack1Blue = Trajectory(Pose(), Pose())
+    @JvmField
+    val PreloadtoBack2Blue = Trajectory(Pose(), Pose())
+
+    private val preloadSet0Blue = PreloadTrajectorySet(Preload0Blue, PreloadtoBack0Blue)
+    private val preloadSet1Blue = PreloadTrajectorySet(Preload1Blue, PreloadtoBack1Blue)
+    private  val preloadSet2Blue = PreloadTrajectorySet(Preload2Blue, PreloadtoBack2Blue)
+
+    private val bluepreloads = Vector3Trajectories(preloadSet0Blue, preloadSet1Blue, preloadSet2Blue)
+
+    @JvmField
+    var droptostack = Trajectory(Pose(), Pose())
+
+    @JvmField
+    var stacktodrop = Trajectory(Pose(), Pose())
+
+    @JvmField
+    var redpreload = redpreloads[autocase][0]
+
+    @JvmField
+    var redbackdrop = redpreloads[autocase][1]
+
+    @JvmField
+    var bluepreload = bluepreloads[autocase][0]
+
+    @JvmField
+    var bluebackdrop = bluepreloads[autocase][1]
+
+    @JvmField
+    var park = Trajectory(Pose(), Pose())
+
+    @JvmField
+    var failsafe = Trajectory(Pose(), Pose())
 }
