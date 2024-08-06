@@ -36,23 +36,6 @@ class autoBlueShort : LinearOpMode(){
 
 }
 
-@Autonomous
-class parcarealbastru: LinearOpMode(){
-    override fun runOpMode() {
-        init_teleop(this)
-        waitForStart()
-        drivetrain.straferight()
-    }
-}
-
-@Autonomous
-class parcarerosu: LinearOpMode(){
-    override fun runOpMode() {
-        init_teleop(this)
-        waitForStart()
-        drivetrain.strafeleft()
-    }
-}
 
 @Autonomous
 class linetest: LinearOpMode(){

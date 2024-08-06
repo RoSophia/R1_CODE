@@ -76,21 +76,22 @@ object system_funcs {
         tp = dash.telemetry
         controller = Controller()
         autoupdate_tp(tp, "IMEW", "A MIMIR")
-        //imew = ThreadedIMU("imu")
+        imew = ThreadedIMU("imu")
         autoupdate_tp(tp, "IMEW", "AWAKE")
-        //imew.init()
-        //imew.initThread()
+        imew.init()
+        imew.initThread()
         telemetryPacket = TelemetryPacket()
 
         init_systems()
-        //pipeline = pipeline0()
-        //camera = Camera("Webcam 1", OpenCvCameraRotation.UPRIGHT, 640, 480, pipeline, streaming = true, waitForOpen = true)
+        pipeline = pipeline0()
+        camera = Camera("Webcam 1", OpenCvCameraRotation.UPRIGHT, 640, 480, pipeline, streaming = true, waitForOpen = true)
     }
 
     fun init_systems(){
-        drivetrain = Drivetrain()
         localizer = ThreeWheelLocalizer()
         localizer.init()
+        drivetrain = Drivetrain()
+        drivetrain.init()
         intake = Intake()
         intake.init()
         droneLauncher = Drone_launcher()
@@ -99,13 +100,14 @@ object system_funcs {
         claws.initpos()
         arm = Arm()
         arm.init()
+
         slides = Slides()
     }
 
     fun update() {
         controlHub.clearBulkCache()
         expansionHub.clearBulkCache()
-        //telemetryPacket.addLine(localizer.robotpose.x.toString() + " " + localizer.robotpose.y.toString() + " " + localizer.robotpose.heading.toString())
-        //localizer.update()
+        telemetryPacket.addLine(localizer.robotpose.x.toString() + " " + localizer.robotpose.y.toString() + " " + localizer.robotpose.heading.toString())
+        localizer.update()
     }
 }

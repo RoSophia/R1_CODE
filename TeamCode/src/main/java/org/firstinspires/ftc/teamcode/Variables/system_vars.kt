@@ -48,4 +48,7 @@ object system_vars {
     @JvmField
     var MPinitDecceleration: Double = 1.4
 
+    @JvmField
+    var equalizercoef: Double = 0.95
+
 }

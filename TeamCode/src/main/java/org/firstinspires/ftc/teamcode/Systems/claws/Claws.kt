@@ -18,11 +18,19 @@ class Claws {
     fun initpos(){
         lclaw.position = lclawOpenPos
         rclaw.position = rclawOpenPos
-        //rotator.position = clawRotateInit
+        rotator.position = clawRotateInit
     }
     fun grab(){
         lclaw.position = lclawClosePos
         rclaw.position = rclawClosePos
+    }
+
+    fun droppurple(){
+        lclaw.position = lclawOpenPos
+    }
+
+    fun dropyellow(){
+        rclaw.position = rclawOpenPos
     }
 
     fun rotate(){
@@ -34,14 +42,6 @@ class Claws {
 
     fun drop(){
         lclaw.position = lclawOpenPos
-        rclaw.position = rclawOpenPos
-    }
-
-    fun dropPreload(){
-        lclaw.position = lclawOpenPos
-    }
-
-    fun dropPreloadBackdrop(){
         rclaw.position = rclawOpenPos
     }
 }

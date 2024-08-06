@@ -13,6 +13,7 @@ import org.firstinspires.ftc.teamcode.Variables.system_funcs.hardwareMap
 import org.firstinspires.ftc.teamcode.Variables.system_funcs.imew
 import org.firstinspires.ftc.teamcode.Variables.system_funcs.lom
 import org.firstinspires.ftc.teamcode.Variables.system_funcs.tp
+import org.firstinspires.ftc.teamcode.Variables.system_vars.equalizercoef
 import java.lang.Math.PI
 import java.lang.Math.max
 
@@ -23,8 +24,6 @@ class Drivetrain {
     private val lfmotor = hardwareMap.dcMotor.get("LF")
     private val rbmotor = hardwareMap.dcMotor.get("RB")
     private val rfmotor = hardwareMap.dcMotor.get("RF")
-
-
 
     fun init(){
         lbmotor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
@@ -72,10 +71,7 @@ class Drivetrain {
     fun dummydrive(){
        // var slow = 1.0 - slowdown * 0.75
         var heading = imew.yaw
-        autoupdate_tp(tp, "HEADING", heading.toString())
-    //    autoupdate_tp(tp, "LEFTODO",leftParallelEncoder.currentPosition.toString())
-    //    autoupdate_tp(tp, "RIGHTODO", rightParallelEncoder.currentPosition.toString())
-    //    autoupdate_tp(tp, "BACKODO", perpendicularEncoder.currentPosition.toString())
+
         var speed = -lom.gamepad1.left_stick_y
         var strafe = -lom.gamepad1.left_stick_x
         var turn = lom.gamepad1.right_stick_x
@@ -149,29 +145,35 @@ class Drivetrain {
         sleep(3000)
     }
 
-    fun gm0drive(){
+    fun gm0drive(slow: Double){
+
+        val slowdown = 1.0 - slow * 0.75
         rbmotor.direction = DcMotorSimple.Direction.REVERSE
         rfmotor.direction = DcMotorSimple.Direction.REVERSE
+
+        var heading = imew.yaw
+
         val y = lom.gamepad1.left_stick_y.toDouble() // Remember, Y stick value is reversed
 
         val x = -lom.gamepad1.left_stick_x * 1.1 // Counteract imperfect strafing
 
         val rx = -lom.gamepad1.right_stick_x.toDouble()
 
+        var fieldcentricspeed = y*Math.cos(heading)-x*Math.sin(heading)
+        var fieldcentricstrafe = y*Math.sin(heading)+x*Math.cos(heading)
+
         val denominator = max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1.0)
-        val frontLeftPower = (y + x + rx) / denominator
-        val backLeftPower = (y - x + rx) / denominator
-        val frontRightPower = (y - x - rx) / denominator
-        val backRightPower = (y + x - rx) / denominator
+        val frontLeftPower = (fieldcentricspeed + fieldcentricstrafe + rx) / denominator
+        val backLeftPower = (fieldcentricspeed - fieldcentricstrafe + rx) / denominator
+        val frontRightPower = (fieldcentricspeed - fieldcentricstrafe - rx) / denominator
+        val backRightPower = (fieldcentricspeed + fieldcentricstrafe - rx) / denominator
 
-        lfmotor.power = frontLeftPower
-        lbmotor.power = backLeftPower
-        rbmotor.power = backRightPower
-        rfmotor.power = frontRightPower
+        lfmotor.power = frontLeftPower * equalizercoef * slowdown
+        lbmotor.power = backLeftPower * equalizercoef * slowdown
+        rbmotor.power = backRightPower * equalizercoef * slowdown
+        rfmotor.power = frontRightPower * slowdown
 
     }
 
-    fun pidtopreload(){
-     //   var turn = anglepid.update(quality_of_life_funcs.angDiff(imew.yaw, headings[autocase]))
-    }
+    //todo: do anglepid correction to overcome imperfect wheel rpm
 }
