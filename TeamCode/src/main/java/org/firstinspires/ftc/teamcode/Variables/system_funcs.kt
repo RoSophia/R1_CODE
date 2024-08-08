@@ -7,6 +7,7 @@ import com.qualcomm.hardware.lynx.LynxModule
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.hardware.HardwareMap
 import com.qualcomm.robotcore.hardware.configuration.LynxConstants
+import com.qualcomm.robotcore.util.ElapsedTime
 import org.firstinspires.ftc.robotcore.external.Telemetry
 import org.firstinspires.ftc.teamcode.Algorithms.quality_of_life_funcs.autoupdate_tp
 import org.firstinspires.ftc.teamcode.Autonomous.Pose
@@ -106,7 +107,10 @@ object system_funcs {
         slides = Slides()
     }
 
+    private val et = ElapsedTime()
     fun update() {
+        autoupdate_tp("Framerate", 1 / et.seconds())
+        et.reset()
         controlHub.clearBulkCache()
         expansionHub.clearBulkCache()
         telemetryPacket.addLine(localizer.robotpose.x.toString() + " " + localizer.robotpose.y.toString() + " " + localizer.robotpose.heading.toString())

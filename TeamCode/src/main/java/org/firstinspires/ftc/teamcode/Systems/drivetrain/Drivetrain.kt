@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Systems.drivetrain
 
 //import org.firstinspires.ftc.teamcode.Variables.system_funcs.batteryVoltageSensor
+import android.annotation.SuppressLint
 import android.os.SystemClock.sleep
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorSimple
@@ -16,6 +17,8 @@ import org.firstinspires.ftc.teamcode.Variables.system_funcs.tp
 import org.firstinspires.ftc.teamcode.Variables.system_vars.equalizercoef
 import java.lang.Math.PI
 import java.lang.Math.max
+import kotlin.math.cos
+import kotlin.math.sin
 
 
 class Drivetrain {
@@ -25,7 +28,7 @@ class Drivetrain {
     private val rbmotor = hardwareMap.dcMotor.get("RB")
     private val rfmotor = hardwareMap.dcMotor.get("RF")
 
-    fun init(){
+    fun init() {
         rbmotor.direction = DcMotorSimple.Direction.REVERSE
         rfmotor.direction = DcMotorSimple.Direction.REVERSE
 
@@ -40,12 +43,14 @@ class Drivetrain {
     }
 
 
-    fun drive(){
-        var theta = Math.atan2(lom.gamepad1.left_stick_x.toDouble(), lom.gamepad1.left_stick_y.toDouble())
-        var sin = Math.sin(theta - PI/4)
-        var cos = Math.cos(theta- PI/4)
+    fun drive() {
+        var theta =
+            Math.atan2(lom.gamepad1.left_stick_x.toDouble(), lom.gamepad1.left_stick_y.toDouble())
+        var sin = Math.sin(theta - PI / 4)
+        var cos = Math.cos(theta - PI / 4)
 
-        var power = Math.hypot(lom.gamepad1.left_stick_x.toDouble(), lom.gamepad1.left_stick_y.toDouble())
+        var power =
+            Math.hypot(lom.gamepad1.left_stick_x.toDouble(), lom.gamepad1.left_stick_y.toDouble())
 
         var direction = -lom.gamepad1.right_stick_y.toDouble()
 
@@ -54,7 +59,7 @@ class Drivetrain {
         lfmotor.power = power * cos + direction
         rfmotor.power = power * cos - direction
 
-        if(power + Math.abs(direction) > 1){
+        if (power + Math.abs(direction) > 1) {
             lbmotor.power /= power + direction
             rbmotor.power /= power + direction
             lfmotor.power /= power + direction
@@ -62,7 +67,7 @@ class Drivetrain {
         }
     }
 
-    fun dummydriverobotcentric(){
+    fun dummydriverobotcentric() {
         val y = -lom.gamepad1.left_stick_y // Remember, Y stick value is reversed
 
         val x = -lom.gamepad1.left_stick_x // Counteract imperfect strafing
@@ -91,11 +96,12 @@ class Drivetrain {
         autoupdate_tp(tp, "merge trenu", "daaaaaaaa")
     }
 
-    fun autodrive(speed: Double, turn: Double, heading: Double, slow: Double){
-
+    @SuppressLint("DefaultLocale")
+    fun autodrive(speed: Double, turn: Double, heading: Double, slow: Double) {
+        autoupdate_tp("Autodrive", String.format("%.2f %.2f %.2f %.2f", speed, turn, heading, slow))
         val slowdown = 1.0 - slow * 0.75
-        val ms = speed * Math.sin(heading + imew.yaw)
-        val mc = speed * Math.cos(heading + imew.yaw)
+        val ms = speed * sin(heading + imew.yaw)
+        val mc = speed * cos(heading + imew.yaw)
 
         val lfPower = ms + turn
         val rfPower = mc - turn
@@ -105,10 +111,10 @@ class Drivetrain {
         lfmotor.power = lfPower * equalizercoef * slowdown
         rfmotor.power = rfPower * slowdown
         lbmotor.power = lbPower * equalizercoef * slowdown
-        rbmotor.power = rbPower  * equalizercoef * slowdown
+        rbmotor.power = rbPower * equalizercoef * slowdown
     }
 
-    fun gm0drive(slow: Double){
+    fun gm0drive(slow: Double) {
 
         val slowdown = 1.0 - slow * 0.75
         rbmotor.direction = DcMotorSimple.Direction.REVERSE
@@ -122,8 +128,8 @@ class Drivetrain {
 
         val rx = -lom.gamepad1.right_stick_x.toDouble()
 
-        var fieldcentricspeed = y*Math.cos(heading)-x*Math.sin(heading)
-        var fieldcentricstrafe = y*Math.sin(heading)+x*Math.cos(heading)
+        var fieldcentricspeed = y * Math.cos(heading) - x * Math.sin(heading)
+        var fieldcentricstrafe = y * Math.sin(heading) + x * Math.cos(heading)
 
         val denominator = max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1.0)
         val frontLeftPower = (fieldcentricspeed + fieldcentricstrafe + rx) / denominator

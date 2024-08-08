@@ -1,15 +1,22 @@
 package org.firstinspires.ftc.teamcode.Algorithms
 
+import android.annotation.SuppressLint
 import org.firstinspires.ftc.robotcore.external.Telemetry
 import org.firstinspires.ftc.teamcode.Math.formulas
+import org.firstinspires.ftc.teamcode.Variables.system_funcs.tp
 import java.lang.Math.PI
 import java.lang.Math.floor
 
+@SuppressLint("DefaultLocale")
 object quality_of_life_funcs {
-    fun autoupdate_tp(telemetry: Telemetry, string: String, string2: String){
+    fun autoupdate_tp(telemetry: Telemetry, string: String, string2: Any){
         telemetry.addData(string, string2)
         telemetry.update()
     }
+
+    fun autoupdate_tp(tp: Telemetry, string: String, value: Float) = autoupdate_tp(tp, string, String.format("%.4f", value))
+    fun autoupdate_tp(tp: Telemetry, string: String, value: Double) = autoupdate_tp(tp, string, String.format("%.4f", value))
+    fun autoupdate_tp(string: String, value: Any) = autoupdate_tp(tp, string, value)
 
     fun posdiff(servoPos1: Double, servoPos2: Double) = formulas.abs(servoPos1 - servoPos2) < 0.001
 

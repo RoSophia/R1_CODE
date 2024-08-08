@@ -1,14 +1,11 @@
 package org.firstinspires.ftc.teamcode.TeleOp
 
-import android.graphics.Color
 import com.acmerobotics.dashboard.FtcDashboard
 import com.acmerobotics.dashboard.config.Config
 import com.outoftheboxrobotics.photoncore.Photon
-import com.qualcomm.hardware.lynx.LynxModule
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.hardware.Gamepad
-import com.qualcomm.robotcore.hardware.configuration.LynxConstants
 import com.qualcomm.robotcore.util.ElapsedTime
 import org.firstinspires.ftc.teamcode.Algorithms.PIDF
 import org.firstinspires.ftc.teamcode.Algorithms.action
@@ -44,18 +41,18 @@ import org.firstinspires.ftc.teamcode.Systems.slides.slides_vars.ltargetposition
 import org.firstinspires.ftc.teamcode.Systems.slides.slides_vars.rslideRange
 import org.firstinspires.ftc.teamcode.Systems.slides.slides_vars.rtargetposition
 import org.firstinspires.ftc.teamcode.Systems.slides.slides_vars.slideforce
+import org.firstinspires.ftc.teamcode.TeleOp.koef.WHATABURGER
+import org.firstinspires.ftc.teamcode.TeleOp.koef.angletolerance
 import org.firstinspires.ftc.teamcode.Variables.PIDCOEF
 import org.firstinspires.ftc.teamcode.Variables.PIDCoefs.pidcoefSlide
 import org.firstinspires.ftc.teamcode.Variables.system_funcs
 import org.firstinspires.ftc.teamcode.Variables.system_funcs.arm
 import org.firstinspires.ftc.teamcode.Variables.system_funcs.camera
 import org.firstinspires.ftc.teamcode.Variables.system_funcs.claws
-import org.firstinspires.ftc.teamcode.Variables.system_funcs.controlHub
 import org.firstinspires.ftc.teamcode.Variables.system_funcs.currentcommand
 import org.firstinspires.ftc.teamcode.Variables.system_funcs.dash
 import org.firstinspires.ftc.teamcode.Variables.system_funcs.drivetrain
 import org.firstinspires.ftc.teamcode.Variables.system_funcs.droneLauncher
-import org.firstinspires.ftc.teamcode.Variables.system_funcs.expansionHub
 import org.firstinspires.ftc.teamcode.Variables.system_funcs.hardwareMap
 import org.firstinspires.ftc.teamcode.Variables.system_funcs.imew
 import org.firstinspires.ftc.teamcode.Variables.system_funcs.init_teleop
@@ -75,6 +72,8 @@ import org.firstinspires.ftc.teamcode.Variables.system_vars.trigtresh
 import org.openftc.easyopencv.OpenCvCameraRotation
 import kotlin.math.PI
 import kotlin.math.abs
+import kotlin.math.atan2
+import kotlin.math.hypot
 
 var isgoingup: Boolean = false
 var rpid: PIDF = PIDF(pidcoefSlide)
@@ -290,14 +289,9 @@ class teleopcapac: LinearOpMode(){
         val ep = ElapsedTime()
         var targetheading: Double = 0.0
         var headingcorrectionpid = PIDF(PIDCOEF(koef.p, koef.i, koef.d, koef.f))
+        waitForStart()
+        camera.stop()
         while(!isStopRequested){
-            headingcorrectionpid.update(targetheading - imew.yaw)
-
-            drivetrain.autodrive(
-                Math.hypot(-gamepad1.left_stick_x.toDouble(), gamepad1.left_stick_y.toDouble() ),
-                -gamepad1.right_stick_x.toDouble() + headingcorrectionpid.update(angDiff(targetheading, imew.yaw)),
-                Math.atan2(gamepad1.left_stick_y.toDouble(), gamepad1.left_stick_x.toDouble()) - PI/4,
-                gamepad1.left_trigger.toDouble())
 
             if(abs(gamepad1.right_stick_x) > 0.05){
                 targetheading = imew.yaw
@@ -307,22 +301,36 @@ class teleopcapac: LinearOpMode(){
                     targetheading = imew.yaw
                 }
             }
+            //autoupdate_tp("curyaw", imew.yaw)
+            //autoupdate_tp("target", targetheading)
+            //autoupdate_tp("diff", angDiff(targetheading, imew.yaw))
+            //autoupdate_tp("correction", headingcorrectionpid.update(angDiff(targetheading, imew.yaw)))
+            drivetrain.autodrive(
+                hypot(-gamepad1.left_stick_x.toDouble(), gamepad1.left_stick_y.toDouble() ),
+                -gamepad1.right_stick_x.toDouble() - if(abs(angDiff(targetheading, imew.yaw)) >= angletolerance) headingcorrectionpid.update(angDiff(targetheading, imew.yaw)) else 0.0,
+                atan2(gamepad1.left_stick_y.toDouble(), gamepad1.left_stick_x.toDouble()) + WHATABURGER,
+                gamepad1.left_trigger.toDouble())
+            update()
         }
 
-        update()
+
     }
 }
 
 @Config
 object koef{
     @JvmField
-    var p = 0.5
+    var p = 0.35
     @JvmField
     var i = 0.0
     @JvmField
     var d = 0.1
     @JvmField
     var f = 0.15
+    @JvmField
+    var angletolerance = 0.4
+    @JvmField
+    var WHATABURGER = PI * 3 / 2
 }
 
 
@@ -330,19 +338,6 @@ object koef{
 class kamera: LinearOpMode(){
     override fun runOpMode() {
         hardwareMap = this.hardwareMap
-        val lynxModules = system_funcs.hardwareMap.getAll(LynxModule::class.java)
-        for (module in lynxModules) {
-            module.bulkCachingMode = LynxModule.BulkCachingMode.MANUAL
-        }
-        if (lynxModules[0].isParent && LynxConstants.isEmbeddedSerialNumber(lynxModules[0].serialNumber)) {
-            controlHub = lynxModules[0]
-            expansionHub = lynxModules[1]
-        } else {
-            controlHub = lynxModules[1]
-            expansionHub = lynxModules[0]
-        }
-        controlHub.setConstant(Color.rgb(221, 168, 255))
-        expansionHub.setConstant(Color.rgb(255, 0,0))
         dash = FtcDashboard.getInstance()
         tp = dash.telemetry
         pipeline = pipeline0()

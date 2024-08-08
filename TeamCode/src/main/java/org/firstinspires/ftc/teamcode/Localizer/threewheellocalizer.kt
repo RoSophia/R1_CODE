@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.Algorithms.quality_of_life_funcs.autoupdat
 import org.firstinspires.ftc.teamcode.Autonomous.Pose
 import org.firstinspires.ftc.teamcode.Variables.system_funcs.hardwareMap
 import org.firstinspires.ftc.teamcode.Variables.system_funcs.tp
-import org.firstinspires.ftc.teamcode.hardware.Encoder
+import org.firstinspires.ftc.teamcode.hardware.Raikoder
 import java.lang.Math.cos
 import java.lang.Math.sin
 
@@ -28,12 +28,12 @@ class ThreeWheelLocalizer(): Localizer{
     //going letftt = +
 
     private val LEFT_PARALLEL_OFFSET: Double = 12.0
-    private val RIGHT_PARALLEL_OFFSET: Double = 12.0
-    private val PERPENDICULAR_OFFSET: Double = 15.0
+    private val RIGHT_PARALLEL_OFFSET: Double = -12.0
+    private val PERPENDICULAR_OFFSET: Double = 14.65
 
-    private val leftParallelEncoder = hardwareMap.dcMotor.get("RF")
-    private val rightParallelEncoder = hardwareMap.dcMotor.get("RB")
-    private val perpendicularEncoder = hardwareMap.dcMotor.get("INTAKE")
+    private val perpendicularEncoder = Raikoder("RF", 1)
+    private val leftParallelEncoder = Raikoder("RB", 1)
+    private val rightParallelEncoder = Raikoder("INTAKE", 1)
 
     private var lastLeftParallelReading: Int = 0
     private var lastRightParallelReading: Int = 0
@@ -41,22 +41,14 @@ class ThreeWheelLocalizer(): Localizer{
 
 
     fun init() {
-        rightParallelEncoder.direction = DcMotorSimple.Direction.REVERSE
 
-        leftParallelEncoder.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
-        rightParallelEncoder.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
-        perpendicularEncoder.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
-
-        leftParallelEncoder.mode = DcMotor.RunMode.RUN_USING_ENCODER
-        rightParallelEncoder.mode = DcMotor.RunMode.RUN_USING_ENCODER
-        perpendicularEncoder.mode = DcMotor.RunMode.RUN_USING_ENCODER
     }
 
     fun update() {
 
-        var deltaLeftParallelReading: Double = (leftParallelEncoder.currentPosition - lastLeftParallelReading).toDouble()
-        var deltaRightParallelReading: Double = (rightParallelEncoder.currentPosition - lastRightParallelReading).toDouble()
-        var deltaPerpendicularReading: Double = (perpendicularEncoder.currentPosition - lastPerpendicularReading).toDouble()
+        var deltaLeftParallelReading: Double = (leftParallelEncoder.pos - lastLeftParallelReading).toDouble()
+        var deltaRightParallelReading: Double = (rightParallelEncoder.pos - lastRightParallelReading).toDouble()
+        var deltaPerpendicularReading: Double = (perpendicularEncoder.pos - lastPerpendicularReading).toDouble()
 
         lastLeftParallelReading += deltaLeftParallelReading.toInt()
         lastRightParallelReading += deltaRightParallelReading.toInt()
@@ -83,9 +75,9 @@ class ThreeWheelLocalizer(): Localizer{
 
         robotpose.heading = AngleUnit.normalizeRadians(robotpose.heading)
 
-        autoupdate_tp(tp, "LEFTODO", "${leftParallelEncoder.currentPosition}")
-        autoupdate_tp(tp, "RIGHTODO", "${rightParallelEncoder.currentPosition}")
-        autoupdate_tp(tp, "BACKODO", "${perpendicularEncoder.currentPosition}")
+        autoupdate_tp(tp, "LEFTODOVEL", "${leftParallelEncoder.vel}")
+        autoupdate_tp(tp, "RIGHTODOVEL", "${rightParallelEncoder.vel}")
+        autoupdate_tp(tp, "BACKODOVEL", "${perpendicularEncoder.vel}")
         autoupdate_tp(tp, "HEADINGODO", "${deltaHeading}")
         autoupdate_tp(tp, "ROBOTPOS", String.format("%.4f", robotpose.x) + "\n" + String.format("%.4f", robotpose.y) + "\n" + String.format("%.4f", robotpose.heading))
     }

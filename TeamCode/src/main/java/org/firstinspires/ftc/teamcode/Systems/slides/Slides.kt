@@ -13,8 +13,6 @@ import org.firstinspires.ftc.teamcode.Variables.system_funcs.hardwareMap
 import org.firstinspires.ftc.teamcode.Variables.system_funcs.lom
 import org.firstinspires.ftc.teamcode.Variables.system_funcs.tp
 
-import org.firstinspires.ftc.teamcode.hardware.Encoder
-
 
 class Slides {
     val lslide = hardwareMap.dcMotor.get("LSLIDE")

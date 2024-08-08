@@ -7,7 +7,8 @@ import org.firstinspires.ftc.teamcode.Variables.system_funcs.firstopen
 import org.firstinspires.ftc.teamcode.Variables.system_funcs.hardwareMap
 import kotlin.math.roundToInt
 
-class EncoderSebi(val name: String, private val direction: Int) {
+//rr encoder
+class Raikoder(val name: String, private val direction: Int) {
     private val clock = NanoClock()
 
     private var lastPosition = 0
@@ -15,7 +16,7 @@ class EncoderSebi(val name: String, private val direction: Int) {
 
     init {
         clock.reset()
-        if (name == "LSLIDE") {
+        /*if (name == "LSLIDE") {
             if (firstopen) {
                 m.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
                 firstopen = false
@@ -23,6 +24,8 @@ class EncoderSebi(val name: String, private val direction: Int) {
         } else {
             m.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
         }
+        m.mode = DcMotor.RunMode.RUN_USING_ENCODER*/
+        m.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
         m.mode = DcMotor.RunMode.RUN_USING_ENCODER
     }
 
@@ -63,16 +66,4 @@ class EncoderSebi(val name: String, private val direction: Int) {
         return real.toDouble() * direction
     }
 
-}
-
-class Encoder(val motor: DcMotor) {
-    var reversed: Boolean = false
-        set(value) {field = value}
-
-    init {
-        motor.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
-        motor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
-    }
-
-    fun getPosition(): Int = motor.currentPosition * (if (reversed) 1 else -1)
 }

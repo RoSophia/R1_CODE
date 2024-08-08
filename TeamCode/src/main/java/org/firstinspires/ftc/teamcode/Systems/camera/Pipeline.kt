@@ -3,12 +3,14 @@ package org.firstinspires.ftc.teamcode.Systems.camera
 
 import com.acmerobotics.dashboard.FtcDashboard
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket
+import org.firstinspires.ftc.teamcode.Algorithms.color_detection.RGBtoHSV
 import org.firstinspires.ftc.teamcode.Algorithms.color_detection.isRightColor
 import org.firstinspires.ftc.teamcode.Algorithms.quality_of_life_funcs.autoupdate_tp
 import org.firstinspires.ftc.teamcode.Autonomous.Vec4i
 import org.firstinspires.ftc.teamcode.Autonomous.auto_vars.autocase
 import org.firstinspires.ftc.teamcode.Autonomous.auto_vars.isRed
 import org.firstinspires.ftc.teamcode.Math.formulas.abs
+import org.firstinspires.ftc.teamcode.Math.formulas.angdiff
 import org.firstinspires.ftc.teamcode.Math.formulas.max
 import org.firstinspires.ftc.teamcode.Systems.camera.camera_vars.COL_INDEX
 import org.firstinspires.ftc.teamcode.Systems.camera.camera_vars.CUR_DONE_CORRECTION
@@ -20,10 +22,15 @@ import org.firstinspires.ftc.teamcode.Systems.camera.camera_vars.autominblocks
 import org.firstinspires.ftc.teamcode.Systems.camera.camera_vars.framelength
 import org.firstinspires.ftc.teamcode.Systems.camera.camera_vars.framewidth
 import org.firstinspires.ftc.teamcode.Systems.camera.camera_vars.linepos
+import org.firstinspires.ftc.teamcode.Systems.camera.camera_vars.lineposred
 import org.firstinspires.ftc.teamcode.Systems.camera.camera_vars.offx
 import org.firstinspires.ftc.teamcode.Systems.camera.camera_vars.offy
 import org.firstinspires.ftc.teamcode.Systems.camera.camera_vars.patratepelatime
 import org.firstinspires.ftc.teamcode.Systems.camera.camera_vars.patratepelungime
+import org.firstinspires.ftc.teamcode.Systems.camera.camera_vars.redHue
+import org.firstinspires.ftc.teamcode.Systems.camera.camera_vars.redMaxHueVariation
+import org.firstinspires.ftc.teamcode.Systems.camera.camera_vars.redMinSaturation
+import org.firstinspires.ftc.teamcode.Systems.camera.camera_vars.redMinValue
 import org.firstinspires.ftc.teamcode.Systems.camera.camera_vars.squaresize
 import org.firstinspires.ftc.teamcode.Systems.camera.camera_vars.step
 import org.firstinspires.ftc.teamcode.Systems.camera.camera_vars.testx
@@ -202,43 +209,42 @@ class pipelinedarscrisdeivi(resolutionx: Int, resolutiony: Int) : OpenCvPipeline
     }
 }
 
-class Pipeline : OpenCvPipeline(){
+class Pipeline : OpenCvPipeline() {
 
     private val frame = Mat()
     private val ff = Mat()
 
-    private fun getcase(midBlocks: Int, rightBlocks: Int): Int{
-        return if(midBlocks > autominblocks && rightBlocks > autominblocks){
-            if(midBlocks > rightBlocks) 1 else 2
-        }
-        else{
-            if(midBlocks > autominblocks){
+    private fun getcase(midBlocks: Int, rightBlocks: Int): Int {
+        return if (midBlocks > autominblocks && rightBlocks > autominblocks) {
+            if (midBlocks > rightBlocks) 1 else 2
+        } else {
+            if (midBlocks > autominblocks) {
                 1
-            }
-            else if(rightBlocks > autominblocks){
+            } else if (rightBlocks > autominblocks) {
                 2
-            }
-            else{
+            } else {
                 0
             }
         }
     }
 
-    private fun squareify(p: Vec4i): Int{
+    private fun squareify(p: Vec4i): Int {
         var res = 0
-        for (x in p.a .. p.a + p.c) {
-            for (y in p.b .. p.b + p.d) {
+        for (x in p.a..p.a + p.c) {
+            for (y in p.b..p.b + p.d) {
                 val vl = frame[y, x] ?: continue
                 if (isRightColor(vl)) {
                     Imgproc.rectangle(ff, Rect(x, y, 1, 1), Scalar(255.0, 255.0, 255.0), -1)
                     ++res
                 } else {
                     if (DRAW_BOXES) {
-                        Imgproc.rectangle(ff, Rect(x, y, 1, 1), Scalar(
-                            kotlin.math.max(vl[COL_INDEX] - 10.0, 0.0),
-                            kotlin.math.max(vl[COL_INDEX] - 10.0, 0.0),
-                            kotlin.math.max(vl[COL_INDEX] - 10.0, 0.0)
-                        ), -1)
+                        Imgproc.rectangle(
+                            ff, Rect(x, y, 1, 1), Scalar(
+                                kotlin.math.max(vl[COL_INDEX] - 10.0, 0.0),
+                                kotlin.math.max(vl[COL_INDEX] - 10.0, 0.0),
+                                kotlin.math.max(vl[COL_INDEX] - 10.0, 0.0)
+                            ), -1
+                        )
                     }
                 }
             }
@@ -308,13 +314,21 @@ class Pipeline : OpenCvPipeline(){
             autocase = curr
 
             val w = frame.width()
-            Imgproc.line(ff, Point(CameraMidPos, 80.0), Point(CameraMidPos, 380.0), Scalar(255.0, 0.0, 0.0, 255.0), 4)
+            Imgproc.line(
+                ff,
+                Point(CameraMidPos, 80.0),
+                Point(CameraMidPos, 380.0),
+                Scalar(255.0, 0.0, 0.0, 255.0),
+                4
+            )
 
             if (DRAW_MEDIAN && !ff.empty()) {
                 val c1 = Point(w / 2.0 + CUR_DONE_CORRECTION * 20, 10.0)
                 val c2 = Point(w / 2.0, 10.0)
 
-                Imgproc.line(ff, c1, c2, Scalar(100.0, if (autocase == 0) 0.0 else 100.0, if (autocase == 1) 0.0 else 100.0, 255.0), 9)
+                Imgproc.line(ff, c1, c2, Scalar(100.0, if (autocase == 0) 0.0 else 100.0, if (autocase == 1) 0.0 else 100.0, 255.0),
+                    9
+                )
             }
 
             return if ((DRAW_BOXES || DRAW_MEDIAN) && !ff.empty()) {
@@ -322,14 +336,14 @@ class Pipeline : OpenCvPipeline(){
             } else {
                 frame
             }
-        }  else {
+        } else {
             return input
         }
     }
 
 }
 
-class pipeline0: OpenCvPipeline(){
+class pipeline0 : OpenCvPipeline() {
     private val frame = Mat()
     private val ff = Mat()
     private var midBlocks = 0
@@ -342,48 +356,61 @@ class pipeline0: OpenCvPipeline(){
         input.copyTo(frame)
         Imgproc.cvtColor(frame, frame, COLOR_RGB2HSV_FULL)
         frame.copyTo(ff)
-        /*for(i in 0 .. framelength - squaresize step squaresize){
-            for(j in 0 .. framewidth - squaresize step squaresize){
+        for (i in 0..framelength - squaresize step squaresize) {
+            for (j in 0..framewidth - squaresize step squaresize) {
                 val patratul = frame[j, i] ?: continue
-                if(isRightColor(patratul)){
+                if(isRed){
+                    linepos = lineposred
+                }
+                if (isRightColor(patratul)) {
                     if (i < linepos) {
                         ++leftBlocks
                     } else {
                         ++midBlocks
                     }
 
-                    if(midBlocks > 3000){
-                        autoupdate_tp(tp, "MID", "A")
-                    } else if(leftBlocks > 3000){
-                        autoupdate_tp(tp, "LEFT", "A")
-                    }
-                    else{
-                        autoupdate_tp(tp, "RIGHT", "A")
-                    }
-
+                    Imgproc.rectangle(ff, Rect(i, j, squaresize, squaresize), Scalar(255.0, 255.0, 255.0), 2)
+                } else {
+                    Imgproc.rectangle(ff, Rect(i, j, squaresize, squaresize), Scalar(0.0, 0.0, 0.0), 1)
                 }
-                Imgproc.rectangle(
-                    ff,
-                    Rect(i, j, squaresize , squaresize ),
-                    Scalar(0.0, 0.0, 0.0),
-                    1
-                )
-                autoupdate_tp(tp, "X", "${i}")
             }
-        }*/
-        autoupdate_tp(tp, "H", "${frame[testy, testx][0]}")
-        autoupdate_tp(tp, "S",  "${frame[testy, testx][1]}")
-        autoupdate_tp(tp, "V", "${frame[testy, testx][2]}")
-        Imgproc.rectangle(
-            ff,
-            Rect(testx, testy, squaresize , squaresize ),
-            Scalar(0.0, 0.0, 0.0),
-            1
-        )
+        }
+//        autoupdate_tp(tp, "H", "${frame[testy, testx][0] / 255.0 * PI * 2}")
+//        autoupdate_tp(tp, "S", "${frame[testy, testx][1]}")
+        //autoupdate_tp(tp, "V", "${frame[testy, testx][2]}")
+        //autoupdate_tp(tp, "The one ", abs(angdiff(frame[testy, testx][0] / 255.0 * PI * 2, redHue)))
+        if (isRightColor(frame[testy, testx])) {
+            Imgproc.rectangle(ff, Rect(testx, testy, squaresize, squaresize), Scalar(255.0, 0.0, 0.0), 2)
+        } else {
+            Imgproc.rectangle(ff, Rect(testx, testy, squaresize, squaresize), Scalar(0.0, 0.0, 0.0), 1)
+        }
 
         Imgproc.line(ff, Point(linepos, 0.0), Point(linepos, 480.0), Scalar(255.0, 0.0, 0.0, 255.0), 5)
         autoupdate_tp(tp, "LEFTBLOCKS", "${leftBlocks}")
         autoupdate_tp(tp, "MIDBLOCKS", "${midBlocks}")
+        if(!isRed){
+            if(midBlocks > maxblocks){
+                autocase = 1
+            }
+            else if(leftBlocks > maxblocks){
+                autocase = 0
+            }
+            else{
+                autocase = 2
+            }
+        }
+        else{
+            if(midBlocks > maxblocks){
+                autocase = 0
+            }
+            else if(leftBlocks > maxblocks){
+                autocase = 1
+            }
+            else{
+                autocase = 2
+            }
+        }
+
         return ff
     }
 }
