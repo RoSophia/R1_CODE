@@ -30,4 +30,6 @@ object formulas {
     fun angdiff(ang1: Double, ang2: Double): Double{
         return ang1
     }
+
+    fun Double.format(digits: Int) = "%.${digits}f".format(this)
 }

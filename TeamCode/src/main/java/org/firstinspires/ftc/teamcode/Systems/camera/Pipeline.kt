@@ -17,6 +17,8 @@ import org.firstinspires.ftc.teamcode.Systems.camera.camera_vars.DO_I_EVEN_PROCE
 import org.firstinspires.ftc.teamcode.Systems.camera.camera_vars.DRAW_BOXES
 import org.firstinspires.ftc.teamcode.Systems.camera.camera_vars.DRAW_MEDIAN
 import org.firstinspires.ftc.teamcode.Systems.camera.camera_vars.autominblocks
+import org.firstinspires.ftc.teamcode.Systems.camera.camera_vars.framelength
+import org.firstinspires.ftc.teamcode.Systems.camera.camera_vars.framewidth
 import org.firstinspires.ftc.teamcode.Systems.camera.camera_vars.linepos
 import org.firstinspires.ftc.teamcode.Systems.camera.camera_vars.offx
 import org.firstinspires.ftc.teamcode.Systems.camera.camera_vars.offy
@@ -24,6 +26,8 @@ import org.firstinspires.ftc.teamcode.Systems.camera.camera_vars.patratepelatime
 import org.firstinspires.ftc.teamcode.Systems.camera.camera_vars.patratepelungime
 import org.firstinspires.ftc.teamcode.Systems.camera.camera_vars.squaresize
 import org.firstinspires.ftc.teamcode.Systems.camera.camera_vars.step
+import org.firstinspires.ftc.teamcode.Systems.camera.camera_vars.testx
+import org.firstinspires.ftc.teamcode.Systems.camera.camera_vars.testy
 import org.firstinspires.ftc.teamcode.Variables.system_funcs.lom
 import org.firstinspires.ftc.teamcode.Variables.system_funcs.tp
 import org.opencv.core.Mat
@@ -32,8 +36,10 @@ import org.opencv.core.Rect
 import org.opencv.core.Scalar
 import org.opencv.imgproc.Imgproc
 import org.opencv.imgproc.Imgproc.COLOR_RGB2HSV_FULL
+import org.openftc.easyopencv.OpenCvCamera
 import org.openftc.easyopencv.OpenCvPipeline
 import java.lang.Math.PI
+import java.time.Clock
 
 class pipelinedarscrisdeivi(resolutionx: Int, resolutiony: Int) : OpenCvPipeline() {
 
@@ -326,29 +332,58 @@ class Pipeline : OpenCvPipeline(){
 class pipeline0: OpenCvPipeline(){
     private val frame = Mat()
     private val ff = Mat()
-
+    private var midBlocks = 0
+    private var leftBlocks = 0
+    private var maxblocks = 200
     override fun processFrame(input: Mat): Mat {
         if (input.empty()) {
             return input
         }
         input.copyTo(frame)
+        Imgproc.cvtColor(frame, frame, COLOR_RGB2HSV_FULL)
         frame.copyTo(ff)
-        for(i in 0 .. 640 step squaresize){
-            for(j in 0 .. 480 step squaresize){
-                val patratul = frame[i, j] ?: continue
+        /*for(i in 0 .. framelength - squaresize step squaresize){
+            for(j in 0 .. framewidth - squaresize step squaresize){
+                val patratul = frame[j, i] ?: continue
                 if(isRightColor(patratul)){
+                    if (i < linepos) {
+                        ++leftBlocks
+                    } else {
+                        ++midBlocks
+                    }
+
+                    if(midBlocks > 3000){
+                        autoupdate_tp(tp, "MID", "A")
+                    } else if(leftBlocks > 3000){
+                        autoupdate_tp(tp, "LEFT", "A")
+                    }
+                    else{
+                        autoupdate_tp(tp, "RIGHT", "A")
+                    }
 
                 }
                 Imgproc.rectangle(
                     ff,
-                    Rect(i, j, squaresize - 1, squaresize - 1),
-                    Scalar(255.0, 255.0, 255.0),
+                    Rect(i, j, squaresize , squaresize ),
+                    Scalar(0.0, 0.0, 0.0),
                     1
                 )
+                autoupdate_tp(tp, "X", "${i}")
             }
-        }
-        Imgproc.line(ff, Point(linepos, 0.0), Point(linepos, 480.0), Scalar(255.0, 0.0, 0.0, 255.0), 5)
+        }*/
+        autoupdate_tp(tp, "H", "${frame[testy, testx][0]}")
+        autoupdate_tp(tp, "S",  "${frame[testy, testx][1]}")
+        autoupdate_tp(tp, "V", "${frame[testy, testx][2]}")
+        Imgproc.rectangle(
+            ff,
+            Rect(testx, testy, squaresize , squaresize ),
+            Scalar(0.0, 0.0, 0.0),
+            1
+        )
 
+        Imgproc.line(ff, Point(linepos, 0.0), Point(linepos, 480.0), Scalar(255.0, 0.0, 0.0, 255.0), 5)
+        autoupdate_tp(tp, "LEFTBLOCKS", "${leftBlocks}")
+        autoupdate_tp(tp, "MIDBLOCKS", "${midBlocks}")
         return ff
     }
 }

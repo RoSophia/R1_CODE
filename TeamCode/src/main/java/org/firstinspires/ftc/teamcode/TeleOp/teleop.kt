@@ -1,9 +1,14 @@
 package org.firstinspires.ftc.teamcode.TeleOp
 
+import android.graphics.Color
+import com.acmerobotics.dashboard.FtcDashboard
+import com.acmerobotics.dashboard.config.Config
 import com.outoftheboxrobotics.photoncore.Photon
+import com.qualcomm.hardware.lynx.LynxModule
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.hardware.Gamepad
+import com.qualcomm.robotcore.hardware.configuration.LynxConstants
 import com.qualcomm.robotcore.util.ElapsedTime
 import org.firstinspires.ftc.teamcode.Algorithms.PIDF
 import org.firstinspires.ftc.teamcode.Algorithms.action
@@ -22,6 +27,8 @@ import org.firstinspires.ftc.teamcode.Systems.arm.arm_vars.larmDown
 import org.firstinspires.ftc.teamcode.Systems.arm.arm_vars.larmUp
 import org.firstinspires.ftc.teamcode.Systems.arm.arm_vars.rarmDown
 import org.firstinspires.ftc.teamcode.Systems.arm.arm_vars.rarmUp
+import org.firstinspires.ftc.teamcode.Systems.camera.Camera
+import org.firstinspires.ftc.teamcode.Systems.camera.pipeline0
 import org.firstinspires.ftc.teamcode.Systems.claws.claws_vars.clawRotateMaxPos
 import org.firstinspires.ftc.teamcode.Systems.claws.claws_vars.lclawClosePos
 import org.firstinspires.ftc.teamcode.Systems.claws.claws_vars.lclawOpenPos
@@ -43,15 +50,19 @@ import org.firstinspires.ftc.teamcode.Variables.system_funcs
 import org.firstinspires.ftc.teamcode.Variables.system_funcs.arm
 import org.firstinspires.ftc.teamcode.Variables.system_funcs.camera
 import org.firstinspires.ftc.teamcode.Variables.system_funcs.claws
+import org.firstinspires.ftc.teamcode.Variables.system_funcs.controlHub
 import org.firstinspires.ftc.teamcode.Variables.system_funcs.currentcommand
+import org.firstinspires.ftc.teamcode.Variables.system_funcs.dash
 import org.firstinspires.ftc.teamcode.Variables.system_funcs.drivetrain
 import org.firstinspires.ftc.teamcode.Variables.system_funcs.droneLauncher
+import org.firstinspires.ftc.teamcode.Variables.system_funcs.expansionHub
 import org.firstinspires.ftc.teamcode.Variables.system_funcs.hardwareMap
 import org.firstinspires.ftc.teamcode.Variables.system_funcs.imew
 import org.firstinspires.ftc.teamcode.Variables.system_funcs.init_teleop
 import org.firstinspires.ftc.teamcode.Variables.system_funcs.intake
 import org.firstinspires.ftc.teamcode.Variables.system_funcs.localizer
 import org.firstinspires.ftc.teamcode.Variables.system_funcs.lom
+import org.firstinspires.ftc.teamcode.Variables.system_funcs.pipeline
 import org.firstinspires.ftc.teamcode.Variables.system_funcs.slides
 import org.firstinspires.ftc.teamcode.Variables.system_funcs.telemetryPacket
 import org.firstinspires.ftc.teamcode.Variables.system_funcs.tp
@@ -61,6 +72,7 @@ import org.firstinspires.ftc.teamcode.Variables.system_vars.intakeInit
 import org.firstinspires.ftc.teamcode.Variables.system_vars.larmInit
 import org.firstinspires.ftc.teamcode.Variables.system_vars.rarmInit
 import org.firstinspires.ftc.teamcode.Variables.system_vars.trigtresh
+import org.openftc.easyopencv.OpenCvCameraRotation
 import kotlin.math.PI
 import kotlin.math.abs
 
@@ -142,17 +154,14 @@ class teleopHAIDEEEEEEEEE: LinearOpMode(){
         var ishanging2: Boolean = false
         var isnotrotatingleft: Boolean = false
         var isnotrotatingright: Boolean = false
-
+        currentcommand = null
         waitForStart()
-        ep.startTime()
-
         while(!isStopRequested){
-            if(currentcommand != commands.transfer()){
+            if(ep.milliseconds() >= 1200){
                 if(sensor.got2pixels()){
                     ep.reset()
-                    ep.startTime()
                     gamepad2.rumble(200)
-                    currentcommand = commands.transfer()
+                   // currentcommand = commands.transfer()
                 }
             }
             //TRANSFER TO INIT
@@ -209,7 +218,7 @@ class teleopHAIDEEEEEEEEE: LinearOpMode(){
 
             //DRIVETRAIN
            // drivetrain.dummydriverobotcentric()
-           // drivetrain.gm0drive()
+            drivetrain.gm0drive(gamepad1.left_trigger.toDouble())
 
             //IMEW RESET
             if(gamepad1.ps && !isresetting){
@@ -278,8 +287,9 @@ class teleopcapac: LinearOpMode(){
     override fun runOpMode() {
         init_teleop(this)
         drivetrain = Drivetrain()
+        val ep = ElapsedTime()
         var targetheading: Double = 0.0
-        var headingcorrectionpid = PIDF(PIDCOEF(0.0, 0.0, 0.0, 0.0))
+        var headingcorrectionpid = PIDF(PIDCOEF(koef.p, koef.i, koef.d, koef.f))
         while(!isStopRequested){
             headingcorrectionpid.update(targetheading - imew.yaw)
 
@@ -289,10 +299,56 @@ class teleopcapac: LinearOpMode(){
                 Math.atan2(gamepad1.left_stick_y.toDouble(), gamepad1.left_stick_x.toDouble()) - PI/4,
                 gamepad1.left_trigger.toDouble())
 
-            if(abs(gamepad1.right_stick_y) > 0.05){
+            if(abs(gamepad1.right_stick_x) > 0.05){
                 targetheading = imew.yaw
+                ep.reset()
+            } else {
+                while(ep.milliseconds() <= 200){
+                    targetheading = imew.yaw
+                }
             }
         }
-    }
 
+        update()
+    }
+}
+
+@Config
+object koef{
+    @JvmField
+    var p = 0.5
+    @JvmField
+    var i = 0.0
+    @JvmField
+    var d = 0.1
+    @JvmField
+    var f = 0.15
+}
+
+
+@TeleOp
+class kamera: LinearOpMode(){
+    override fun runOpMode() {
+        hardwareMap = this.hardwareMap
+        val lynxModules = system_funcs.hardwareMap.getAll(LynxModule::class.java)
+        for (module in lynxModules) {
+            module.bulkCachingMode = LynxModule.BulkCachingMode.MANUAL
+        }
+        if (lynxModules[0].isParent && LynxConstants.isEmbeddedSerialNumber(lynxModules[0].serialNumber)) {
+            controlHub = lynxModules[0]
+            expansionHub = lynxModules[1]
+        } else {
+            controlHub = lynxModules[1]
+            expansionHub = lynxModules[0]
+        }
+        controlHub.setConstant(Color.rgb(221, 168, 255))
+        expansionHub.setConstant(Color.rgb(255, 0,0))
+        dash = FtcDashboard.getInstance()
+        tp = dash.telemetry
+        pipeline = pipeline0()
+        camera = Camera("Webcam 1", OpenCvCameraRotation.UPRIGHT, 640, 480, pipeline, streaming = true, waitForOpen = true)
+        while(!isStopRequested){
+            camera.opened = true
+        }
+    }
 }

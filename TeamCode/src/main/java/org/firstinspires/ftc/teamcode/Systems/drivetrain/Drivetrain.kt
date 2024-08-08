@@ -131,9 +131,9 @@ class Drivetrain {
         val frontRightPower = (fieldcentricspeed - fieldcentricstrafe - rx) / denominator
         val backRightPower = (fieldcentricspeed + fieldcentricstrafe - rx) / denominator
 
-        lfmotor.power = frontLeftPower * equalizercoef * slowdown
-        lbmotor.power = backLeftPower * equalizercoef * slowdown
-        rbmotor.power = backRightPower * equalizercoef * slowdown
+        lfmotor.power = frontLeftPower * slowdown
+        lbmotor.power = backLeftPower * slowdown
+        rbmotor.power = backRightPower * slowdown
         rfmotor.power = frontRightPower * slowdown
 
     }

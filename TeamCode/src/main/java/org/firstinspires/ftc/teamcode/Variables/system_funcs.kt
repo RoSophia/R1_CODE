@@ -84,9 +84,9 @@ object system_funcs {
         imew.initThread()
         telemetryPacket = TelemetryPacket()
 
-       // init_systems()
-       // pipeline = pipeline0()
-       // camera = Camera("Webcam 1", OpenCvCameraRotation.UPRIGHT, 640, 480, pipeline, streaming = true, waitForOpen = true)
+        init_systems()
+        pipeline = pipeline0()
+        camera = Camera("Webcam 1", OpenCvCameraRotation.UPRIGHT, 640, 480, pipeline, streaming = true, waitForOpen = true)
     }
 
     fun init_systems(){
