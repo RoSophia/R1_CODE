@@ -155,14 +155,19 @@ class teleopHAIDEEEEEEEEE: LinearOpMode(){
         var isnotrotatingright: Boolean = false
         currentcommand = null
         waitForStart()
+        camera.stop()
+
         while(!isStopRequested){
+
             if(ep.milliseconds() >= 1200){
                 if(sensor.got2pixels()){
                     ep.reset()
                     gamepad2.rumble(200)
+                    gamepad1.rumble(200)
                    // currentcommand = commands.transfer()
                 }
             }
+
             //TRANSFER TO INIT
             if(gamepad2.a && !RAAAAAAAAAH){
 
@@ -199,21 +204,21 @@ class teleopHAIDEEEEEEEEE: LinearOpMode(){
             raaaaaaaah = gamepad2.x
 
             //INTAKE
-            if(gamepad2.right_bumper && !isintaking) {
+            if(gamepad1.right_bumper && !isintaking) {
                 autoupdate_tp(tp, "alo intake", "da")
                 intake.take()
             }
 
-            if(gamepad2.left_bumper && !isintaking2) {
+            if(gamepad1.left_bumper && !isintaking2) {
                 intake.spit()
             }
 
-            if((!gamepad2.left_bumper && isintaking2) || (!gamepad2.right_bumper && isintaking)){
+            if((!gamepad1.left_bumper && isintaking2) || (!gamepad1.right_bumper && isintaking)){
                 autoupdate_tp(tp, "intake zi nu", "nu")
                 intake.stop()
             }
-            isintaking = gamepad2.right_bumper
-            isintaking2 = gamepad2.left_bumper
+            isintaking = gamepad1.right_bumper
+            isintaking2 = gamepad1.left_bumper
 
             //DRIVETRAIN
            // drivetrain.dummydriverobotcentric()
@@ -246,7 +251,7 @@ class teleopHAIDEEEEEEEEE: LinearOpMode(){
 
             slides.run()
 
-            if(gamepad2.left_trigger < 0.5 && !isnotrotatingleft){
+            if(gamepad2.left_trigger > 0.5 && !isnotrotatingleft){
                 claws.rotator.position += 0.1
                 if(claws.rotator.position > clawRotateMaxPos){
                     claws.rotator.position = clawRotateInit
@@ -254,7 +259,7 @@ class teleopHAIDEEEEEEEEE: LinearOpMode(){
             }
             isnotrotatingleft = gamepad2.left_trigger > 0.5
 
-            if(gamepad2.right_trigger < 0.5 && !isnotrotatingright){
+            if(gamepad2.right_trigger > 0.5 && !isnotrotatingright){
                 claws.rotator.position -= 0.1
                 if(claws.rotator.position <  clawRotateInit){
                     claws.rotator.position = clawRotateInit
@@ -327,23 +332,9 @@ object koef{
     var d = 0.1
     @JvmField
     var f = 0.15
-    @JvmField
-    var angletolerance = 0.4
-    @JvmField
-    var WHATABURGER = PI * 3 / 2
-}
 
-
-@TeleOp
-class kamera: LinearOpMode(){
-    override fun runOpMode() {
-        hardwareMap = this.hardwareMap
-        dash = FtcDashboard.getInstance()
-        tp = dash.telemetry
-        pipeline = pipeline0()
-        camera = Camera("Webcam 1", OpenCvCameraRotation.UPRIGHT, 640, 480, pipeline, streaming = true, waitForOpen = true)
-        while(!isStopRequested){
-            camera.opened = true
-        }
-    }
+    @JvmField
+    var angletolerance = 0.1
+    @JvmField
+    var WHATABURGER = PI * 5 / 4
 }

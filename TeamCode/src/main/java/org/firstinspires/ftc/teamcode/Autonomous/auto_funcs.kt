@@ -43,6 +43,9 @@ object auto_funcs {
         var runningcommand = path
         while (!lom.isStopRequested) {
             if(runningcommand != null){
+                if(runningcommand.run(telemetryPacket)){
+                    runningcommand = null
+                }
             }
             pp.update()
             update()

@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.CommandBase
 
 import com.qualcomm.hardware.ams.AMSColorSensor.Wait
 import org.apache.commons.math3.ode.SecondaryEquations
+import org.firstinspires.ftc.teamcode.Autonomous.Pose
+import org.firstinspires.ftc.teamcode.Pathing.Trajectory
 import org.firstinspires.ftc.teamcode.Pathing.auto_trajectories.bluebackdrop
 import org.firstinspires.ftc.teamcode.Pathing.auto_trajectories.bluepreload
 import org.firstinspires.ftc.teamcode.Pathing.auto_trajectories.droptostack
@@ -14,6 +16,7 @@ import org.firstinspires.ftc.teamcode.Systems.arm.arm_vars.fourbarfinalpos
 import org.firstinspires.ftc.teamcode.Systems.arm.arm_vars.fourbarinit
 import org.firstinspires.ftc.teamcode.Systems.arm.arm_vars.larmDown
 import org.firstinspires.ftc.teamcode.Systems.intake.intake_vars
+import org.firstinspires.ftc.teamcode.Systems.intake.intake_vars.intakeMotorPower
 import org.firstinspires.ftc.teamcode.Systems.intake.intake_vars.lidClosePos
 import org.firstinspires.ftc.teamcode.Systems.intake.intake_vars.lidOpenPos
 import org.firstinspires.ftc.teamcode.Variables.system_funcs.arm
@@ -28,10 +31,14 @@ object commands{
         return SequentialCommand(
             InstantCommand { arm.goInit() },
             InstantCommand { arm.fourbar.position = fourbarinit },
-            InstantCommand { intake.intakeServo.position = 0.75},
-            WaitUntilCommand { intake.intakeServo.position == 0.75 },
+            InstantCommand { intake.intakeServo.position = 0.8},
+            WaitUntilCommand { intake.intakeServo.position == 0.8 },
+            InstantCommand { intake.intakeMotor.power = intakeMotorPower},
+            SleepCommand(0.2),
+            InstantCommand { intake.stop() },
             InstantCommand { intake.lidServo.position = lidOpenPos },
-            WaitUntilCommand { intake.lidServo.position == lidOpenPos },
+            //WaitUntilCommand { intake.lidServo.position == lidOpenPos },
+            SleepCommand(0.2),
             InstantCommand { arm.goDown() },
             SleepCommand(0.2),
             InstantCommand { claws.grab() },
@@ -58,15 +65,18 @@ object commands{
     fun goup(): Command{
         return SequentialCommand(
             InstantCommand { arm.goUp() },
+            SleepCommand(0.1),
             InstantCommand { arm.fourbar.position =  fourbarfinalpos }
         )
     }
 
     fun goinit(): Command{
         return SequentialCommand(
+            InstantCommand { claws.rotator.position = 0.05},
             InstantCommand { claws.drop() },
             SleepCommand(0.1),
             InstantCommand { arm.goInit() },
+            SleepCommand(0.2),
             InstantCommand { arm.fourbar.position =  fourbarinit }
         )
     }
@@ -125,5 +135,9 @@ object commands{
             cycle(1),
             InstantCommand { pp.followtraj(park) }
         )
+    }
+
+    fun test(): Command{
+        return InstantCommand{pp.followtraj(Trajectory(Pose(0.0, 0.0, 0.0), Pose(100.0,0.0,0.0)))}
     }
 }

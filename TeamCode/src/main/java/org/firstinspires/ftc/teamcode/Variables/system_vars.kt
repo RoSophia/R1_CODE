@@ -9,7 +9,7 @@ object system_vars {
     @JvmField
     var clawRotateInit: Double = 0.05
     @JvmField
-    var intakeInit: Double = 0.62
+    var intakeInit: Double = 0.81
 
     @JvmField
     var droneInit: Double = 0.5

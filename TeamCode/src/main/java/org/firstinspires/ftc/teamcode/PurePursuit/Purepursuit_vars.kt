@@ -5,5 +5,5 @@ import com.acmerobotics.dashboard.config.Config
 @Config
  object purepursuit_vars {
      @JvmField
-     var radius: Double = 0.0
+     var radius: Double = 28.0
 }

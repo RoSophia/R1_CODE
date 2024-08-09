@@ -131,7 +131,7 @@ object blue_short_vals {
 @Config
 object test_linie {
     @JvmField
-    var Liniuta = Trajectory(Pose(0.0, 0.0, 0.0), Pose(100.0, 0.0, 2.0))
+    var Liniuta = Trajectory(Pose(0.0, 0.0, 0.0), Pose(100.0, 0.0, 0.0))
 }
 
 @Config

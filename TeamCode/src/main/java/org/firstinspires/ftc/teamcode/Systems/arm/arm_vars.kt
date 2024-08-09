@@ -20,9 +20,9 @@ object arm_vars {
     @JvmField
     var rarmDown: Double = 0.5
     @JvmField
-    var fourbarinit: Double = 0.18
+    var fourbarinit: Double = 0.15
     @JvmField
-    var fourbarfinalpos: Double = 0.55
+    var fourbarfinalpos: Double = 0.6
     @JvmField
     var rarmPreload: Double = 0.6
     @JvmField

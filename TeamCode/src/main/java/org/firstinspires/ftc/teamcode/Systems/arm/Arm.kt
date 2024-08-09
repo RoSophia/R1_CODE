@@ -36,13 +36,14 @@ class Arm {
     private val MPdown = motionprofiler(MPdownVelocity, MPdownAcceleration, MPdownDecceleration)
 
     fun init(){
+        fourbar.position = 0.2
         rarm.position = rarmInit
         larm.position = larmInit
-        fourbar.position = 0.2
+
     }
 
     fun goDown(){
-        fourbar.position = 0.05
+        fourbar.position = fourbarinit
         rarm.position = rarmDown
         larm.position = larmDown
 

@@ -88,6 +88,7 @@ object system_funcs {
         init_systems()
         pipeline = pipeline0()
         camera = Camera("Webcam 1", OpenCvCameraRotation.UPRIGHT, 640, 480, pipeline, streaming = true, waitForOpen = true)
+        pp = purepursuit()
     }
 
     fun init_systems(){
@@ -113,7 +114,7 @@ object system_funcs {
         et.reset()
         controlHub.clearBulkCache()
         expansionHub.clearBulkCache()
-        telemetryPacket.addLine(localizer.robotpose.x.toString() + " " + localizer.robotpose.y.toString() + " " + localizer.robotpose.heading.toString())
+        //telemetryPacket.addLine(localizer.robotpose.x.toString() + " " + localizer.robotpose.y.toString() + " " + localizer.robotpose.heading.toString())
         localizer.update()
     }
 }

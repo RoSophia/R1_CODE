@@ -7,15 +7,15 @@ object intake_vars{
     @JvmField
     var intakeMotorPower: Double = 1.0
     @JvmField
-    var intakePosTop: Double = 0.9
+    var intakePosTop: Double = 0.93
     @JvmField
-    var intakePosFour: Double = 0.85
+    var intakePosFour: Double = 0.90
     @JvmField
-    var intakePosThree: Double = 0.8
+    var intakePosThree: Double = 0.87
     @JvmField
-    var intakePosTwo: Double = 0.78
+    var intakePosTwo: Double = 0.83
     @JvmField
-    var lidOpenPos: Double = 0.5
+    var lidOpenPos: Double = 0.65
     @JvmField
     var lidClosePos: Double = 1.0
 }

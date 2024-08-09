@@ -34,18 +34,20 @@ class Intake {
     fun take(){
        // intakeServo.position = intakeInit
         intakeMotor.power = intakeMotorPower
+      //  autoupdate_tp("INTAKE", "DA")
     }
 
     fun spit(){
       //  intakeServo.position = intakeInit
         intakeMotor.power = -intakeMotorPower
+     //   autoupdate_tp("INTAKE", "DA")
     }
 
     fun run(){
 
         intakeMotor.power = lom.gamepad2.left_stick_y.toDouble()
         if(intakeMotor.power != 0.0){
-            autoupdate_tp(tp, "INTAKE", "RUNNING")
+         //   autoupdate_tp(tp, "INTAKE", "DA")
         }
     }
 
