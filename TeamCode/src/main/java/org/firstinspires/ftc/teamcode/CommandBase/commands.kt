@@ -38,7 +38,7 @@ object commands{
             InstantCommand { intake.stop() },
             InstantCommand { intake.lidServo.position = lidOpenPos },
             //WaitUntilCommand { intake.lidServo.position == lidOpenPos },
-            SleepCommand(0.2),
+            SleepCommand(0.5),
             InstantCommand { arm.goDown() },
             SleepCommand(0.2),
             InstantCommand { claws.grab() },
@@ -138,6 +138,6 @@ object commands{
     }
 
     fun test(): Command{
-        return InstantCommand{pp.followtraj(Trajectory(Pose(0.0, 0.0, 0.0), Pose(100.0,0.0,0.0)))}
+        return InstantCommand{pp.followtraj(Trajectory(Pose(0.0, 0.0, 0.0), Pose(0.0,0.0,2.0)))}
     }
 }

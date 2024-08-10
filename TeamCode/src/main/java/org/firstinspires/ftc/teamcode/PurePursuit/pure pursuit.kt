@@ -52,29 +52,34 @@ class purepursuit {
         var speed: Double
         var turn: Double
         var heading: Double
+        //lookahead.x = 0.0
+        //lookahead.y = 0.0
+       // lookahead.heading = 2.0
 
-        while (a <= 1.0 && isincircle(lookahead, robotPos, radius)) {
-            lookahead = traj[a]
-            a += someconstant
+       // while (a <= 1.0 && isincircle(lookahead, robotPos, radius)) {
+      //      lookahead = traj[a]
+       //     a += someconstant
+       // }
+
+        speed = speedpid.update((traj.endpos - robotPos).distance())
+        turn = turnpid.update(angDiff(traj.endpos.heading, robotPos.heading))
+        heading = atan((traj.endpos.x - robotPos.x) / (traj.endpos.y - robotPos.y))
+
+        drivetrain.autodrive(speed, turn, heading, 0.0)
+
+        //autoupdate_tp("a", "${a}")
+        //autoupdate_tp("LOOKAHEAD", "${traj[a].x} ${traj[a].y} ${traj[a].heading}")
+        autoupdate_tp("SPEEDPID", speedpid.update((traj.endpos - robotPos).distance()))
+        autoupdate_tp("DISTANCE BETWEEN TRAJ AND ROBOT", (traj.endpos - robotPos).distance())
+        autoupdate_tp("ROBOTPOS", "${robotPos.x} ${robotPos.y} ${robotPos.heading}")
+        autoupdate_tp("SPEED", "${speed}")
+        autoupdate_tp("TURN", "${turn}")
+        autoupdate_tp("HEADING", "${heading}")
+
+        if (err.distance() < tolerance && err.heading < angtolerance) {
+            haveTraj = false
+            done = true
         }
-
-            speed = speedpid.update((lookahead - robotPos).distance())
-            turn = turnpid.update(angDiff(lookahead.heading, robotPos.heading))
-            heading = atan((lookahead.x - robotPos.x) / (lookahead.y - robotPos.y))
-
-            drivetrain.autodrive(speed, turn, heading, 0.0)
-
-            autoupdate_tp("a", "${a}")
-            autoupdate_tp("LOOKAHEAD", "${traj[a].x} ${traj[a].y} ${traj[a].heading}")
-            autoupdate_tp("ROBOTPOS", "${robotPos.x} ${robotPos.y} ${robotPos.heading}")
-            autoupdate_tp("SPEED", "${speed}")
-            autoupdate_tp("TURN", "${turn}")
-            autoupdate_tp("HEADING", "${heading}")
-
-            if (err.distance() < tolerance && err.heading < angtolerance) {
-                haveTraj = false
-                done = true
-            }
     }
 
     fun followtraj(t: Trajectory){

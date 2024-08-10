@@ -17,8 +17,8 @@ class PIDCOEF(@JvmField var p: Double, @JvmField var i: Double, @JvmField var d:
 
 object PIDCoefs {
     var pidcoefSlide =  PIDCOEF(pidSlideP, pidSlideI, pidSlideD, pidSlideF)
-    var pidcoefSpeed = PIDCOEF(1.0, 1.0, 1.0, 1.0)
-    var pidcoefAngle = PIDCOEF(1.0, 1.0, 1.0, 1.0)
+    var pidcoefSpeed = PIDCOEF(0.5, 0.0, 0.2, 0.3)
+    var pidcoefAngle = PIDCOEF(0.35, 0.0, 0.1, 0.15)
 }
 
 @Config

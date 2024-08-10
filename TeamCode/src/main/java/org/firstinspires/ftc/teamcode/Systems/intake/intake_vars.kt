@@ -15,7 +15,7 @@ object intake_vars{
     @JvmField
     var intakePosTwo: Double = 0.83
     @JvmField
-    var lidOpenPos: Double = 0.65
+    var lidOpenPos: Double = 0.57
     @JvmField
     var lidClosePos: Double = 1.0
 }

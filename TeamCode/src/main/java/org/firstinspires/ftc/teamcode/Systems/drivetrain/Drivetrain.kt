@@ -93,7 +93,7 @@ class Drivetrain {
         rbmotor.power = backRightPower
 
 
-        autoupdate_tp(tp, "merge trenu", "daaaaaaaa")
+        //autoupdate_tp(tp, "merge trenu", "daaaaaaaa")
     }
 
     @SuppressLint("DefaultLocale")
@@ -143,6 +143,4 @@ class Drivetrain {
         rfmotor.power = frontRightPower * slowdown
 
     }
-
-    //todo: do anglepid correction to overcome imperfect wheel rpm
 }

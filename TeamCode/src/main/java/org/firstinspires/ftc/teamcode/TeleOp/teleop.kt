@@ -205,7 +205,7 @@ class teleopHAIDEEEEEEEEE: LinearOpMode(){
 
             //INTAKE
             if(gamepad1.right_bumper && !isintaking) {
-                autoupdate_tp(tp, "alo intake", "da")
+               // autoupdate_tp(tp, "alo intake", "da")
                 intake.take()
             }
 
@@ -214,7 +214,7 @@ class teleopHAIDEEEEEEEEE: LinearOpMode(){
             }
 
             if((!gamepad1.left_bumper && isintaking2) || (!gamepad1.right_bumper && isintaking)){
-                autoupdate_tp(tp, "intake zi nu", "nu")
+               // autoupdate_tp(tp, "intake zi nu", "nu")
                 intake.stop()
             }
             isintaking = gamepad1.right_bumper

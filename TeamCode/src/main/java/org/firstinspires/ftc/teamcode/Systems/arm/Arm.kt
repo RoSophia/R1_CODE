@@ -47,14 +47,14 @@ class Arm {
         rarm.position = rarmDown
         larm.position = larmDown
 
-        autoupdate_tp(tp, "brat jos", "yurrrr")
+        //autoupdate_tp(tp, "brat jos", "yurrrr")
     }
 
     fun goUp(){
         rarm.position = rarmUp
         larm.position = larmUp
 
-        autoupdate_tp(tp, "brat sus", "yurrrr")
+        //autoupdate_tp(tp, "brat sus", "yurrrr")
     }
 
     fun goInit(){

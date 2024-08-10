@@ -25,9 +25,9 @@ class linetest: LinearOpMode(){
     override fun runOpMode() {
         init_teleop(this)
         runningcommand = commands.test()
-        update()
+        //update()
         waitForStart()
-        while(!isStopRequested){
+        while(!isStopRequested && opModeIsActive()){
             if(runningcommand != null){
                 if(runningcommand!!.run(telemetryPacket)){
                     runningcommand = null

@@ -12,7 +12,7 @@ class Drone_launcher {
 
     fun init(){
         launcher.position = droneInit
-        autoupdate_tp(tp, "DRONE", "INITIALIZED")
+        //autoupdate_tp(tp, "DRONE", "INITIALIZED")
     }
 
     fun launch(){

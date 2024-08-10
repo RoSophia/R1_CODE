@@ -27,8 +27,8 @@ class Intake {
     fun init(){
         intakeServo.position = 0.2
         lidServo.position = lidClosePos
-        autoupdate_tp(tp, "INTAKE", "INITIALIZED")
-
+        //
+    // autoupdate_tp(tp, "INTAKE", "INITIALIZED")
     }
 
     fun take(){
