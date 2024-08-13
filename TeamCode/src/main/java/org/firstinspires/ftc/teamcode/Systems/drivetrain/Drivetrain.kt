@@ -2,18 +2,13 @@ package org.firstinspires.ftc.teamcode.Systems.drivetrain
 
 //import org.firstinspires.ftc.teamcode.Variables.system_funcs.batteryVoltageSensor
 import android.annotation.SuppressLint
-import android.os.SystemClock.sleep
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorSimple
-import org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.gamepad1
-import org.firstinspires.ftc.teamcode.Algorithms.PIDF
-import org.firstinspires.ftc.teamcode.Algorithms.quality_of_life_funcs
 import org.firstinspires.ftc.teamcode.Algorithms.quality_of_life_funcs.autoupdate_tp
-import org.firstinspires.ftc.teamcode.Autonomous.auto_vars.autocase
 import org.firstinspires.ftc.teamcode.Variables.system_funcs.hardwareMap
 import org.firstinspires.ftc.teamcode.Variables.system_funcs.imew
+import org.firstinspires.ftc.teamcode.Variables.system_funcs.localizer
 import org.firstinspires.ftc.teamcode.Variables.system_funcs.lom
-import org.firstinspires.ftc.teamcode.Variables.system_funcs.tp
 import org.firstinspires.ftc.teamcode.Variables.system_vars.equalizercoef
 import java.lang.Math.PI
 import java.lang.Math.max
@@ -40,31 +35,6 @@ class Drivetrain {
         rbmotor.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
         rfmotor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
         rfmotor.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
-    }
-
-
-    fun drive() {
-        var theta =
-            Math.atan2(lom.gamepad1.left_stick_x.toDouble(), lom.gamepad1.left_stick_y.toDouble())
-        var sin = Math.sin(theta - PI / 4)
-        var cos = Math.cos(theta - PI / 4)
-
-        var power =
-            Math.hypot(lom.gamepad1.left_stick_x.toDouble(), lom.gamepad1.left_stick_y.toDouble())
-
-        var direction = -lom.gamepad1.right_stick_y.toDouble()
-
-        lbmotor.power = power * sin + direction
-        rbmotor.power = power * sin - direction
-        lfmotor.power = power * cos + direction
-        rfmotor.power = power * cos - direction
-
-        if (power + Math.abs(direction) > 1) {
-            lbmotor.power /= power + direction
-            rbmotor.power /= power + direction
-            lfmotor.power /= power + direction
-            rfmotor.power /= power + direction
-        }
     }
 
     fun dummydriverobotcentric() {
@@ -142,5 +112,18 @@ class Drivetrain {
         rbmotor.power = backRightPower * slowdown
         rfmotor.power = frontRightPower * slowdown
 
+    }
+
+    fun perurobotcentricdrive(forward: Double, strafe: Double, rotation: Double){
+        val denominator = max(1.0, forward + strafe + rotation).toDouble()
+        val heading = localizer.robotpose.heading
+        //var fwdpwr = forward*cos(heading) -strafe*sin(heading)
+       // var strafepwr = forward*sin(heading) +strafe*cos(heading)
+       // var rotationpwr = rotation
+
+        lfmotor.power = (forward + strafe - rotation) / denominator
+        lbmotor.power = (forward - strafe - rotation) / denominator
+        rbmotor.power = (forward + strafe + rotation) / denominator
+        rfmotor.power = (forward - strafe + rotation) / denominator
     }
 }

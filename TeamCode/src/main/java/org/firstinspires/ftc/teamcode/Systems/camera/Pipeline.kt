@@ -348,7 +348,8 @@ class pipeline0 : OpenCvPipeline() {
     private val ff = Mat()
     private var midBlocks = 0
     private var leftBlocks = 0
-    private var maxblocks = 200
+    private var maxblocks = 1000
+    var case = 0
     override fun processFrame(input: Mat): Mat {
         if (input.empty()) {
             return input
@@ -388,29 +389,31 @@ class pipeline0 : OpenCvPipeline() {
         Imgproc.line(ff, Point(linepos, 0.0), Point(linepos, 480.0), Scalar(255.0, 0.0, 0.0, 255.0), 5)
         autoupdate_tp(tp, "LEFTBLOCKS", "${leftBlocks}")
         autoupdate_tp(tp, "MIDBLOCKS", "${midBlocks}")
+        autoupdate_tp(tp, "LEFTBLOCKS>MAXBLOCKS", leftBlocks > maxblocks)
+        autoupdate_tp(tp, "MIDBLOCKS>MAXBLOCKS", midBlocks > maxblocks)
         if(!isRed){
             if(midBlocks > maxblocks){
-                autocase = 1
+                case = 1
             }
             else if(leftBlocks > maxblocks){
-                autocase = 0
+                case = 0
             }
             else{
-                autocase = 2
+                case = 2
             }
         }
         else{
             if(midBlocks > maxblocks){
-                autocase = 0
+                case = 0
             }
             else if(leftBlocks > maxblocks){
-                autocase = 1
+                case = 1
             }
             else{
-                autocase = 2
+                case = 2
             }
         }
-
+        autoupdate_tp("CASEEEEEE", case)
         return ff
     }
 }

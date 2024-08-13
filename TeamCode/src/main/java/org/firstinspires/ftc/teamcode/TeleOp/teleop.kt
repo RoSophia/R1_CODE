@@ -13,16 +13,20 @@ import org.firstinspires.ftc.teamcode.Algorithms.chain_actioner
 import org.firstinspires.ftc.teamcode.Algorithms.color_detection
 import org.firstinspires.ftc.teamcode.Algorithms.quality_of_life_funcs.angDiff
 import org.firstinspires.ftc.teamcode.Algorithms.quality_of_life_funcs.autoupdate_tp
+import org.firstinspires.ftc.teamcode.CommandBase.Command
 import org.firstinspires.ftc.teamcode.CommandBase.commands
 import org.firstinspires.ftc.teamcode.Localizer.ThreeWheelLocalizer
+import org.firstinspires.ftc.teamcode.Systems.arm.Arm
 import org.firstinspires.ftc.teamcode.Systems.arm.arm_vars
 import org.firstinspires.ftc.teamcode.Systems.arm.arm_vars.armstack
 import org.firstinspires.ftc.teamcode.Systems.arm.arm_vars.emptystack
 import org.firstinspires.ftc.teamcode.Systems.arm.arm_vars.fourbarfinalpos
 import org.firstinspires.ftc.teamcode.Systems.arm.arm_vars.fourbarinit
 import org.firstinspires.ftc.teamcode.Systems.arm.arm_vars.larmDown
+import org.firstinspires.ftc.teamcode.Systems.arm.arm_vars.larmPreload
 import org.firstinspires.ftc.teamcode.Systems.arm.arm_vars.larmUp
 import org.firstinspires.ftc.teamcode.Systems.arm.arm_vars.rarmDown
+import org.firstinspires.ftc.teamcode.Systems.arm.arm_vars.rarmPreload
 import org.firstinspires.ftc.teamcode.Systems.arm.arm_vars.rarmUp
 import org.firstinspires.ftc.teamcode.Systems.camera.Camera
 import org.firstinspires.ftc.teamcode.Systems.camera.pipeline0
@@ -154,8 +158,14 @@ class teleopHAIDEEEEEEEEE: LinearOpMode(){
         var isnotrotatingleft: Boolean = false
         var isnotrotatingright: Boolean = false
         currentcommand = null
+        //var runningcommand: Command? = commands.fixservo()
         waitForStart()
         camera.stop()
+        /*if(runningcommand !=  null){
+            if(runningcommand.run(telemetryPacket)){
+                runningcommand = null
+            }
+        }*/
 
         while(!isStopRequested){
 
@@ -203,26 +213,30 @@ class teleopHAIDEEEEEEEEE: LinearOpMode(){
             }
             raaaaaaaah = gamepad2.x
 
+            //DRIVETRAIN
+            // drivetrain.dummydriverobotcentric()
+            drivetrain.gm0drive(gamepad1.left_trigger.toDouble())
+
             //INTAKE
             if(gamepad1.right_bumper && !isintaking) {
                // autoupdate_tp(tp, "alo intake", "da")
-                intake.take()
+                intake.intakeMotor.power = -1.0
             }
 
             if(gamepad1.left_bumper && !isintaking2) {
-                intake.spit()
+                intake.intakeMotor.power = 1.0
             }
 
             if((!gamepad1.left_bumper && isintaking2) || (!gamepad1.right_bumper && isintaking)){
                // autoupdate_tp(tp, "intake zi nu", "nu")
-                intake.stop()
+                intake.intakeMotor.power = 0.0
             }
             isintaking = gamepad1.right_bumper
             isintaking2 = gamepad1.left_bumper
 
-            //DRIVETRAIN
-           // drivetrain.dummydriverobotcentric()
-            drivetrain.gm0drive(gamepad1.left_trigger.toDouble())
+
+
+
 
             //IMEW RESET
             if(gamepad1.ps && !isresetting){
@@ -319,6 +333,22 @@ class teleopcapac: LinearOpMode(){
         }
 
 
+    }
+}
+
+@TeleOp
+class vreaupreload: LinearOpMode(){
+    override fun runOpMode() {
+        init_teleop(this)
+        //arm = Arm()
+        waitForStart()
+        camera.stop()
+        while(!isStopRequested){
+            arm.fourbar.position = fourbarinit
+            arm.rarm.position = rarmInit
+            arm.larm.position = larmInit
+            update()
+        }
     }
 }
 

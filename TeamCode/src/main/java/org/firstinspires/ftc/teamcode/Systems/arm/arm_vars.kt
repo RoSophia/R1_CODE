@@ -12,23 +12,23 @@ import org.firstinspires.ftc.teamcode.Variables.system_vars.larmInit
 @Config
 object arm_vars {
     @JvmField
-    var larmUp: Double = 0.20
+    var larmUp: Double = 0.18
     @JvmField
-    var larmDown: Double = 0.48
+    var larmDown: Double = 0.49
     @JvmField
-    var rarmUp : Double = 0.75
+    var rarmUp : Double = 0.67
     @JvmField
-    var rarmDown: Double = 0.5
+    var rarmDown: Double = 0.4
     @JvmField
-    var fourbarinit: Double = 0.15
+    var fourbarinit: Double = 0.35
     @JvmField
-    var fourbarfinalpos: Double = 0.6
+    var fourbarfinalpos: Double = 0.75
     @JvmField
-    var rarmPreload: Double = 0.6
+    var rarmPreload: Double = 0.75
     @JvmField
-    var larmPreload: Double = 1.0
+    var larmPreload: Double = 0.13
     @JvmField
-    var fourbarPreload: Double = 0.63
+    var fourbarPreload: Double = 0.95
 
     private val lclawclosepos: Double = 0.63
     private val lidopenpos: Double = 0.75

@@ -33,16 +33,12 @@ class ThreeWheelLocalizer(): Localizer{
     private val PERPENDICULAR_OFFSET: Double = 14.65
 
     private val perpendicularEncoder = Raikoder("RF", 1)
-    private val leftParallelEncoder = Raikoder("RB", -1)
-    private val rightParallelEncoder = Raikoder("INTAKE", -1)
+    private val leftParallelEncoder = Raikoder("RB", 1)
+    private val rightParallelEncoder = Raikoder("INTAKE", 1)
 
     private var lastLeftParallelReading: Int = 0
     private var lastRightParallelReading: Int = 0
     private var lastPerpendicularReading: Int = 0
-
-
-    fun init() {
-    }
 
     @SuppressLint("DefaultLocale")
     fun update() {

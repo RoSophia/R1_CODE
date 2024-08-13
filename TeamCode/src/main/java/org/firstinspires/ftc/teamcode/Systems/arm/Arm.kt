@@ -36,14 +36,13 @@ class Arm {
     private val MPdown = motionprofiler(MPdownVelocity, MPdownAcceleration, MPdownDecceleration)
 
     fun init(){
-        fourbar.position = 0.2
+        fourbar.position = 0.4
         rarm.position = rarmInit
         larm.position = larmInit
-
     }
 
     fun goDown(){
-        fourbar.position = fourbarinit
+        //fourbar.position = fourbarinit
         rarm.position = rarmDown
         larm.position = larmDown
 
@@ -53,7 +52,6 @@ class Arm {
     fun goUp(){
         rarm.position = rarmUp
         larm.position = larmUp
-
         //autoupdate_tp(tp, "brat sus", "yurrrr")
     }
 
@@ -74,7 +72,13 @@ class Arm {
     fun goPreloadDown(){
         rarm.position = rarmPreload
         larm.position = larmPreload
-        fourbar.position = fourbarPreload
+        //fourbar.position = fourbarPreload
+    }
+
+    fun goYellowDown(){
+        rarm.position = 0.78
+        larm.position = 0.16
+        fourbar.position = 0.75
     }
 
     fun goInitMP(){

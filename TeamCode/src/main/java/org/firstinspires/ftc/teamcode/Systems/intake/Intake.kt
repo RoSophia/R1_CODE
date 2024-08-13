@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Systems.intake
 
+import com.qualcomm.robotcore.hardware.DcMotor
 import org.firstinspires.ftc.teamcode.Algorithms.quality_of_life_funcs
 import org.firstinspires.ftc.teamcode.Algorithms.quality_of_life_funcs.autoupdate_tp
 import org.firstinspires.ftc.teamcode.Algorithms.quality_of_life_funcs.posdiff
@@ -25,6 +26,7 @@ class Intake {
 
 
     fun init(){
+        intakeMotor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
         intakeServo.position = 0.2
         lidServo.position = lidClosePos
         //
@@ -33,23 +35,16 @@ class Intake {
 
     fun take(){
        // intakeServo.position = intakeInit
-        intakeMotor.power = intakeMotorPower
+        intakeMotor.power = 1.0
       //  autoupdate_tp("INTAKE", "DA")
     }
 
     fun spit(){
       //  intakeServo.position = intakeInit
-        intakeMotor.power = -intakeMotorPower
+        intakeMotor.power = -1.0
      //   autoupdate_tp("INTAKE", "DA")
     }
 
-    fun run(){
-
-        intakeMotor.power = lom.gamepad2.left_stick_y.toDouble()
-        if(intakeMotor.power != 0.0){
-         //   autoupdate_tp(tp, "INTAKE", "DA")
-        }
-    }
 
     fun stop(){
         intakeMotor.power = 0.0

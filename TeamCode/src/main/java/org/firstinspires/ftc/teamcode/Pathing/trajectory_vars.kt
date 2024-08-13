@@ -5,7 +5,10 @@ import org.firstinspires.ftc.teamcode.Autonomous.Pose
 import org.firstinspires.ftc.teamcode.Autonomous.PreloadTrajectorySet
 import org.firstinspires.ftc.teamcode.Autonomous.Vector3Trajectories
 import org.firstinspires.ftc.teamcode.Autonomous.auto_vars.autocase
+import org.firstinspires.ftc.teamcode.Autonomous.auto_vars.isRed
+import org.firstinspires.ftc.teamcode.Variables.system_funcs.pipeline
 import java.util.Vector
+import kotlin.math.PI
 
 @Config
 object red_long_vals{
@@ -138,19 +141,22 @@ object test_linie {
 object auto_trajectories{
 
     //REDS
+    // 1 = center
+    // 0 = back
+    // 2 = truss
     @JvmField
-    val Preload0Red = Trajectory(Pose(), Pose())
+    val Preload0Red = Trajectory(Pose(0.0,0.0,0.0), Pose(65.0, -30.0, PI /2))
     @JvmField
-    val Preload1Red = Trajectory(Pose(), Pose())
+    val Preload1Red = Trajectory(Pose(0.0,0.0,0.0), Pose(65.0, -10.0, 0.0))
     @JvmField
-    val Preload2Red = Trajectory(Pose(), Pose())
+    val Preload2Red = Trajectory(Pose(0.0,0.0,0.0), Pose(65.0, 0.0, 3 * PI / 2))
 
     @JvmField
-    val PreloadtoBack0Red = Trajectory(Pose(), Pose())
+    val PreloadtoBack0Red = Trajectory(Pose(65.0, -10.0, 3 * PI / 2), Pose(30.0, 114.0, 3 * PI / 2))
     @JvmField
-    val PreloadtoBack1Red = Trajectory(Pose(), Pose())
+    val PreloadtoBack1Red = Trajectory(Pose(65.0, -10.0, 0.0), Pose(50.0, 110.0, 3 * PI / 2))
     @JvmField
-    val PreloadtoBack2Red = Trajectory(Pose(), Pose())
+    val PreloadtoBack2Red = Trajectory(Pose(65.0, -10.0, PI /2), Pose(40.0, 114.0,  3 * PI /2))
 
     private val preloadSet0Red = PreloadTrajectorySet(Preload0Red, PreloadtoBack0Red)
     private val preloadSet1Red = PreloadTrajectorySet(Preload1Red, PreloadtoBack1Red)
@@ -180,26 +186,30 @@ object auto_trajectories{
     private val bluepreloads = Vector3Trajectories(preloadSet0Blue, preloadSet1Blue, preloadSet2Blue)
 
     @JvmField
-    var droptostack = Trajectory(Pose(), Pose())
-
-    @JvmField
     var stacktodrop = Trajectory(Pose(), Pose())
 
     @JvmField
-    var redpreload = redpreloads[autocase][0]
+    var redpreload = redpreloads[pipeline.case][0]
 
     @JvmField
-    var redbackdrop = redpreloads[autocase][1]
+    var redbackdrop = redpreloads[pipeline.case][1]
 
     @JvmField
-    var bluepreload = bluepreloads[autocase][0]
+    var bluepreload = bluepreloads[pipeline.case][0]
 
     @JvmField
-    var bluebackdrop = bluepreloads[autocase][1]
+    var bluebackdrop = bluepreloads[pipeline.case][1]
+
+    @JvmField
+    var droptostack = Trajectory(if(isRed) redpreload.endpos else bluepreload.endpos, Pose())
+
 
     @JvmField
     var park = Trajectory(Pose(), Pose())
 
     @JvmField
     var failsafe = Trajectory(Pose(), Pose())
+
+    @JvmField
+    var redpark = Trajectory(Pose(50.0, 110.0, 3 * PI / 2), Pose(-50.0, 110.0, 3 * PI / 2))
 }

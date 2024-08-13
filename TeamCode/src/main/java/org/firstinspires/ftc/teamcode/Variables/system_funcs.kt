@@ -12,6 +12,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry
 import org.firstinspires.ftc.teamcode.Algorithms.quality_of_life_funcs.autoupdate_tp
 import org.firstinspires.ftc.teamcode.Autonomous.Pose
 import org.firstinspires.ftc.teamcode.CommandBase.Command
+import org.firstinspires.ftc.teamcode.CommandBase.commands
 import org.firstinspires.ftc.teamcode.Localizer.Localizer
 import org.firstinspires.ftc.teamcode.Localizer.ThreeWheelLocalizer
 import org.firstinspires.ftc.teamcode.PurePursuit.purepursuit
@@ -93,7 +94,6 @@ object system_funcs {
 
     fun init_systems(){
         localizer = ThreeWheelLocalizer()
-        localizer.init()
         drivetrain = Drivetrain()
         drivetrain.init()
         intake = Intake()

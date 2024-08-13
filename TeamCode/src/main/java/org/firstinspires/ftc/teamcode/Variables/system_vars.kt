@@ -14,9 +14,9 @@ object system_vars {
     @JvmField
     var droneInit: Double = 0.5
     @JvmField
-    var larmInit: Double = 0.36 //0.38
+    var larmInit: Double = 0.35 //0.38
     @JvmField
-    var rarmInit: Double = 0.63  //0.6
+    var rarmInit: Double = 0.53 //0.6
 
     @JvmField
     var larmUp: Double = 0.20
