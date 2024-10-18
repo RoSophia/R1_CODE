@@ -6,7 +6,7 @@ import org.firstinspires.ftc.teamcode.Autonomous.DDoubleV4i
 import org.firstinspires.ftc.teamcode.Autonomous.Vec4i
 import org.firstinspires.ftc.teamcode.Autonomous.Vec4vi
 
-@Config
+//@Config
 object camera_vars {
 
     @JvmField

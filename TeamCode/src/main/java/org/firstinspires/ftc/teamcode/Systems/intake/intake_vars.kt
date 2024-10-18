@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.Systems.intake
 
 import com.acmerobotics.dashboard.config.Config
 
-@Config
+//@Config
 object intake_vars{
     @JvmField
     var intakeMotorPower: Double = 1.0

@@ -13,6 +13,7 @@ import org.firstinspires.ftc.teamcode.Algorithms.chain_actioner
 import org.firstinspires.ftc.teamcode.Algorithms.color_detection
 import org.firstinspires.ftc.teamcode.Algorithms.quality_of_life_funcs.angDiff
 import org.firstinspires.ftc.teamcode.Algorithms.quality_of_life_funcs.autoupdate_tp
+import org.firstinspires.ftc.teamcode.Algorithms.quality_of_life_funcs.posdiff
 import org.firstinspires.ftc.teamcode.CommandBase.Command
 import org.firstinspires.ftc.teamcode.CommandBase.commands
 import org.firstinspires.ftc.teamcode.Localizer.ThreeWheelLocalizer
@@ -47,6 +48,7 @@ import org.firstinspires.ftc.teamcode.Systems.slides.slides_vars.rtargetposition
 import org.firstinspires.ftc.teamcode.Systems.slides.slides_vars.slideforce
 import org.firstinspires.ftc.teamcode.TeleOp.koef.WHATABURGER
 import org.firstinspires.ftc.teamcode.TeleOp.koef.angletolerance
+import org.firstinspires.ftc.teamcode.TeleOp.koef.positie
 import org.firstinspires.ftc.teamcode.Variables.PIDCOEF
 import org.firstinspires.ftc.teamcode.Variables.PIDCoefs.pidcoefSlide
 import org.firstinspires.ftc.teamcode.Variables.system_funcs
@@ -341,12 +343,100 @@ class vreaupreload: LinearOpMode(){
     override fun runOpMode() {
         init_teleop(this)
         //arm = Arm()
+        var one: Boolean = false
+        var two: Boolean = false
+        var three: Boolean = false
+        var four: Boolean = false
+        var five: Boolean = false
+        var six: Boolean = false
+        var seven: Boolean = false
+        var k: Int = 1
         waitForStart()
         camera.stop()
+        intake.intakeServo.position = 0.8
+        intake.lidServo.position = lidOpenPos
+
         while(!isStopRequested){
-            arm.fourbar.position = fourbarinit
-            arm.rarm.position = rarmInit
-            arm.larm.position = larmInit
+
+            claws.rotator.position = positie
+            if(gamepad2.dpad_down && !one){
+                arm.fourbar.position = 0.6
+                arm.goDownIntermediary()
+                sleep(200)
+                arm.goDown()
+                sleep(200)
+                claws.grab()
+            }
+            one = gamepad2.dpad_down
+
+            if(gamepad2.dpad_up && !two){
+                arm.goInit()
+                arm.fourbar.position = 0.6
+            }
+            two = gamepad2.dpad_up
+
+            if(gamepad2.dpad_left && !three){
+                arm.fourbar.position = fourbarfinalpos
+                arm.goUp()
+            }
+            three = gamepad2.dpad_left
+
+            if(gamepad2.dpad_right && !four){
+                claws.drop()
+            }
+            four = gamepad2.dpad_right
+
+            if(gamepad2.a && !five){
+                if(posdiff(intake.lidServo.position, lidOpenPos)) {
+                    intake.lidServo.position = lidClosePos
+                }
+                else{
+                    intake.lidServo.position = lidOpenPos
+                }
+            }
+            five = gamepad2.a
+
+            drivetrain.gm0drive(gamepad1.left_trigger.toDouble())
+
+            if(gamepad1.ps && !isresetting){
+                imew.reset()
+            }
+            isresetting = gamepad1.ps
+
+            slides.run()
+
+            if(gamepad1.b && !isposchanged){
+                autoupdate_tp(tp, "alo intakepos", "daaaaaa")
+                intake.changepos()
+            }
+            isposchanged = gamepad1.b
+
+            if(gamepad1.right_bumper && !isintaking) {
+                // autoupdate_tp(tp, "alo intake", "da")
+                intake.intakeMotor.power = -1.0
+            }
+
+            if(gamepad1.left_bumper && !isintaking2) {
+                intake.intakeMotor.power = 1.0
+            }
+
+            if(gamepad2.b && !six){
+                droneLauncher.launch()
+            }
+            six = gamepad2.b
+
+            if(gamepad2.x && !seven){
+                droneLauncher.launchtwo()
+            }
+            seven = gamepad2.x
+
+            if((!gamepad1.left_bumper && isintaking2) || (!gamepad1.right_bumper && isintaking)){
+                // autoupdate_tp(tp, "intake zi nu", "nu")
+                intake.intakeMotor.power = 0.0
+            }
+            isintaking = gamepad1.right_bumper
+            isintaking2 = gamepad1.left_bumper
+
             update()
         }
     }
@@ -354,6 +444,8 @@ class vreaupreload: LinearOpMode(){
 
 @Config
 object koef{
+    @JvmField
+    var positie = 0.48
     @JvmField
     var p = 0.35
     @JvmField

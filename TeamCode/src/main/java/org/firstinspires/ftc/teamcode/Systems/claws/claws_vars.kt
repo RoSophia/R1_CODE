@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.Systems.claws
 
 import com.acmerobotics.dashboard.config.Config
 
-@Config
+//@Config
 object claws_vars {
     @JvmField
     var lclawOpenPos: Double = 0.3

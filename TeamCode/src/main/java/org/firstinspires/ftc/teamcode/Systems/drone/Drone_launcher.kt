@@ -9,13 +9,19 @@ import org.firstinspires.ftc.teamcode.Variables.system_vars.droneInit
 class Drone_launcher {
 
     val launcher = hardwareMap.servo.get("DRONE")
+    val launchertwo = hardwareMap.servo.get("DRONE2")
 
     fun init(){
         launcher.position = droneInit
+        launchertwo.position = 0.0
         //autoupdate_tp(tp, "DRONE", "INITIALIZED")
     }
 
     fun launch(){
         launcher.position = droneLaunch
+    }
+
+    fun launchtwo(){
+        launchertwo.position = 0.5
     }
 }

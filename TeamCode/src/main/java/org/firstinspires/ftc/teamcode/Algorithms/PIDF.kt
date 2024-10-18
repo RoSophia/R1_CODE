@@ -22,9 +22,17 @@ class PIDF(private val pidcoef: PIDCOEF) {
 
     fun update(err: Double): Double {
         val derivative = (err - proportional) / elapsedTime.seconds()
+
         integral += err * elapsedTime.seconds()
+
         elapsedTime.reset()
+
         proportional = err
+
+
+
+
+
         return err * pidcoef.p + derivative * pidcoef.d + integral * pidcoef.i + sign(err) * if((pidcoef == pidcoefAngle && abs(err) < angletolerance) || (abs(err) < 15.0)) 0.0 else pidcoef.f
     }
 }

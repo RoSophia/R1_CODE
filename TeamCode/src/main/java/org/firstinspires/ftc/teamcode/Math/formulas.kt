@@ -28,9 +28,10 @@ object formulas {
             a
         }
     }
+    fun angnorm(ang: Double) = floatmod(ang, 2 * PI)
+
 
     fun floatmod(ang1: Double, ang2: Double) = ang1 - floor(ang1 / ang2) * ang2
-    fun angnorm(ang: Double) = floatmod(ang, 2 * PI)
     fun angdiff(ang1: Double, ang2: Double) = floatmod(ang2 - ang1 + PI, 2 * PI) - PI
 
     fun Double.format(digits: Int) = "%.${digits}f".format(this)

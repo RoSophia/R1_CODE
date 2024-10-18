@@ -6,6 +6,7 @@ import org.firstinspires.ftc.teamcode.Systems.claws.claws_vars.lclawClosePos
 import org.firstinspires.ftc.teamcode.Systems.claws.claws_vars.lclawOpenPos
 import org.firstinspires.ftc.teamcode.Systems.claws.claws_vars.rclawClosePos
 import org.firstinspires.ftc.teamcode.Systems.claws.claws_vars.rclawOpenPos
+import org.firstinspires.ftc.teamcode.TeleOp.koef.positie
 import org.firstinspires.ftc.teamcode.Variables.system_funcs.hardwareMap
 import org.firstinspires.ftc.teamcode.Variables.system_vars.clawRotateInit
 
@@ -18,7 +19,7 @@ class Claws {
     fun initpos(){
         lclaw.position = lclawOpenPos
         rclaw.position = rclawOpenPos
-        rotator.position = clawRotateInit
+        rotator.position = positie
     }
     fun grab(){
         lclaw.position = lclawClosePos

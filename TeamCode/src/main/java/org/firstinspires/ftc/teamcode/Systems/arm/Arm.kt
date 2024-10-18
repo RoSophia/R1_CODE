@@ -49,6 +49,11 @@ class Arm {
         //autoupdate_tp(tp, "brat jos", "yurrrr")
     }
 
+    fun goDownIntermediary(){
+        rarm.position = 0.28
+        larm.position = 0.48
+    }
+
     fun goUp(){
         rarm.position = rarmUp
         larm.position = larmUp

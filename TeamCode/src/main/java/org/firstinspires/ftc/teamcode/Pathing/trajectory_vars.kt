@@ -10,21 +10,21 @@ import org.firstinspires.ftc.teamcode.Variables.system_funcs.pipeline
 import java.util.Vector
 import kotlin.math.PI
 
-@Config
+//@Config
 object red_long_vals{
 
-    @JvmField
+   // @JvmField
     val Preload0 = Trajectory(Pose(0.0, 0.0, 0.0), Pose(0.0, 0.0, 0.0))
-    @JvmField
+   // @JvmField
     val Preload1 = Trajectory(Pose(0.0, 0.0, 0.0), Pose(0.0, 0.0, 0.0))
-    @JvmField
+   // @JvmField
     val Preload2 = Trajectory(Pose(0.0, 0.0, 0.0), Pose(0.0, 0.0, 0.0))
 
-    @JvmField
+    //@JvmField
     val PreloadtoBack0 = Trajectory(Pose(0.0, 0.0, 0.0), Pose(0.0, 0.0, 0.0))
-    @JvmField
+   // @JvmField
     val PreloadtoBack1 = Trajectory(Pose(0.0, 0.0, 0.0), Pose(0.0, 0.0, 0.0))
-    @JvmField
+    //@JvmField
     val PreloadtoBack2 = Trajectory(Pose(0.0, 0.0, 0.0), Pose(0.0, 0.0, 0.0))
 
     private val preloadSet0 = PreloadTrajectorySet(Preload0, PreloadtoBack0)
@@ -32,29 +32,29 @@ object red_long_vals{
     private  val preloadSet2 = PreloadTrajectorySet(Preload2, PreloadtoBack2)
 
     private val preloadSequences = Vector3Trajectories(preloadSet0, preloadSet1, preloadSet2)
-    @JvmField
+   // @JvmField
     val StartPreload = preloadSequences[autocase][0]
-    @JvmField
+   // @JvmField
     val PreloadBackDrop = preloadSequences[autocase][1]
 
-    @JvmField
+  //  @JvmField
     val Park = Trajectory(Pose(0.0, 0.0, 0.0), Pose(100.0, 0.0, 0.0))
 }
 
 @Config
 object red_short_vals{
-    @JvmField
+   // @JvmField
     val Preload0 = Trajectory(Pose(0.0, 0.0, 0.0), Pose(0.0, 0.0, 0.0))
-    @JvmField
-    val Preload1 = Trajectory(Pose(0.0, 0.0, 0.0), Pose(0.0, 0.0, 0.0))
-    @JvmField
+   // @JvmField
+   val Preload1 = Trajectory(Pose(0.0, 0.0, 0.0), Pose(0.0, 0.0, 0.0))
+       // @JvmField
     val Preload2 = Trajectory(Pose(0.0, 0.0, 0.0), Pose(0.0, 0.0, 0.0))
 
-    @JvmField
+    //@JvmField
     val PreloadtoBack0 = Trajectory(Pose(0.0, 0.0, 0.0), Pose(0.0, 0.0, 0.0))
-    @JvmField
+   // @JvmField
     val PreloadtoBack1 = Trajectory(Pose(0.0, 0.0, 0.0), Pose(0.0, 0.0, 0.0))
-    @JvmField
+   // @JvmField
     val PreloadtoBack2 = Trajectory(Pose(0.0, 0.0, 0.0), Pose(0.0, 0.0, 0.0))
 
     private val preloadSet0 = PreloadTrajectorySet(Preload0, PreloadtoBack0)
@@ -62,29 +62,29 @@ object red_short_vals{
     private  val preloadSet2 = PreloadTrajectorySet(Preload2, PreloadtoBack2)
 
     private val preloadSequences = Vector3Trajectories(preloadSet0, preloadSet1, preloadSet2)
-    @JvmField
+    //@JvmField
     val StartPreload = preloadSequences[autocase][0]
-    @JvmField
+   // @JvmField
     val PreloadBackDrop = preloadSequences[autocase][1]
 
-    @JvmField
+    //@JvmField
     val Park = Trajectory(Pose(0.0, 0.0, 0.0), Pose(100.0, 0.0, 0.0))
 }
 
 @Config
 object blue_long_vals {
-    @JvmField
+   // @JvmField
     val Preload0 = Trajectory(Pose(0.0, 0.0, 0.0), Pose(0.0, 0.0, 0.0))
-    @JvmField
+    //@JvmField
     val Preload1 = Trajectory(Pose(0.0, 0.0, 0.0), Pose(0.0, 0.0, 0.0))
-    @JvmField
+   // @JvmField
     val Preload2 = Trajectory(Pose(0.0, 0.0, 0.0), Pose(0.0, 0.0, 0.0))
 
-    @JvmField
+   // @JvmField
     val PreloadtoBack0 = Trajectory(Pose(0.0, 0.0, 0.0), Pose(0.0, 0.0, 0.0))
-    @JvmField
+   // @JvmField
     val PreloadtoBack1 = Trajectory(Pose(0.0, 0.0, 0.0), Pose(0.0, 0.0, 0.0))
-    @JvmField
+    //@JvmField
     val PreloadtoBack2 = Trajectory(Pose(0.0, 0.0, 0.0), Pose(0.0, 0.0, 0.0))
 
     private val preloadSet0 = PreloadTrajectorySet(Preload0, PreloadtoBack0)
@@ -92,29 +92,29 @@ object blue_long_vals {
     private  val preloadSet2 = PreloadTrajectorySet(Preload2, PreloadtoBack2)
 
     private val preloadSequences = Vector3Trajectories(preloadSet0, preloadSet1, preloadSet2)
-    @JvmField
+    //@JvmField
     val StartPreload = preloadSequences[autocase][0]
-    @JvmField
+   // @JvmField
     val PreloadBackDrop = preloadSequences[autocase][1]
 
-    @JvmField
+    //@JvmField
     val Park = Trajectory(Pose(0.0, 0.0, 0.0), Pose(100.0, 0.0, 0.0))
 }
 
 @Config
 object blue_short_vals {
-    @JvmField
+   // @JvmField
     val Preload0 = Trajectory(Pose(0.0, 0.0, 0.0), Pose(0.0, 0.0, 0.0))
-    @JvmField
+   // @JvmField
     val Preload1 = Trajectory(Pose(0.0, 0.0, 0.0), Pose(0.0, 0.0, 0.0))
-    @JvmField
+   // @JvmField
     val Preload2 = Trajectory(Pose(0.0, 0.0, 0.0), Pose(0.0, 0.0, 0.0))
 
-    @JvmField
+   // @JvmField
     val PreloadtoBack0 = Trajectory(Pose(0.0, 0.0, 0.0), Pose(0.0, 0.0, 0.0))
-    @JvmField
+   // @JvmField
     val PreloadtoBack1 = Trajectory(Pose(0.0, 0.0, 0.0), Pose(0.0, 0.0, 0.0))
-    @JvmField
+    //@JvmField
     val PreloadtoBack2 = Trajectory(Pose(0.0, 0.0, 0.0), Pose(0.0, 0.0, 0.0))
 
     private val preloadSet0 = PreloadTrajectorySet(Preload0, PreloadtoBack0)
@@ -122,18 +122,18 @@ object blue_short_vals {
     private  val preloadSet2 = PreloadTrajectorySet(Preload2, PreloadtoBack2)
 
     private val preloadSequences = Vector3Trajectories(preloadSet0, preloadSet1, preloadSet2)
-    @JvmField
+    //@JvmField
     val StartPreload = preloadSequences[autocase][0]
-    @JvmField
+   // @JvmField
     val PreloadBackDrop = preloadSequences[autocase][1]
 
-    @JvmField
+   // @JvmField
     val Park = Trajectory(Pose(0.0, 0.0, 0.0), Pose(100.0, 0.0, 0.0))
 }
 
 @Config
 object test_linie {
-    @JvmField
+  //  @JvmField
     var Liniuta = Trajectory(Pose(0.0, 0.0, 0.0), Pose(100.0, 0.0, 0.0))
 }
 
@@ -144,18 +144,18 @@ object auto_trajectories{
     // 1 = center
     // 0 = back
     // 2 = truss
-    @JvmField
+   // @JvmField
     val Preload0Red = Trajectory(Pose(0.0,0.0,0.0), Pose(65.0, -30.0, PI /2))
-    @JvmField
+   // @JvmField
     val Preload1Red = Trajectory(Pose(0.0,0.0,0.0), Pose(65.0, -10.0, 0.0))
-    @JvmField
+   // @JvmField
     val Preload2Red = Trajectory(Pose(0.0,0.0,0.0), Pose(65.0, 0.0, 3 * PI / 2))
 
-    @JvmField
+   // @JvmField
     val PreloadtoBack0Red = Trajectory(Pose(65.0, -10.0, 3 * PI / 2), Pose(30.0, 114.0, 3 * PI / 2))
-    @JvmField
+   // @JvmField
     val PreloadtoBack1Red = Trajectory(Pose(65.0, -10.0, 0.0), Pose(50.0, 110.0, 3 * PI / 2))
-    @JvmField
+ //   @JvmField
     val PreloadtoBack2Red = Trajectory(Pose(65.0, -10.0, PI /2), Pose(40.0, 114.0,  3 * PI /2))
 
     private val preloadSet0Red = PreloadTrajectorySet(Preload0Red, PreloadtoBack0Red)
@@ -165,18 +165,18 @@ object auto_trajectories{
     private val redpreloads = Vector3Trajectories(preloadSet0Red, preloadSet1Red, preloadSet2Red)
 
     //BLUES
-    @JvmField
+   // @JvmField
     val Preload0Blue = Trajectory(Pose(), Pose())
-    @JvmField
+   // @JvmField
     val Preload1Blue = Trajectory(Pose(), Pose())
-    @JvmField
+  //  @JvmField
     val Preload2Blue = Trajectory(Pose(), Pose())
 
-    @JvmField
+  //  @JvmField
     val PreloadtoBack0Blue = Trajectory(Pose(), Pose())
-    @JvmField
+  //  @JvmField
     val PreloadtoBack1Blue = Trajectory(Pose(), Pose())
-    @JvmField
+  //  @JvmField
     val PreloadtoBack2Blue = Trajectory(Pose(), Pose())
 
     private val preloadSet0Blue = PreloadTrajectorySet(Preload0Blue, PreloadtoBack0Blue)
@@ -185,31 +185,31 @@ object auto_trajectories{
 
     private val bluepreloads = Vector3Trajectories(preloadSet0Blue, preloadSet1Blue, preloadSet2Blue)
 
-    @JvmField
+   // @JvmField
     var stacktodrop = Trajectory(Pose(), Pose())
 
-    @JvmField
+   // @JvmField
     var redpreload = redpreloads[pipeline.case][0]
 
-    @JvmField
+   // @JvmField
     var redbackdrop = redpreloads[pipeline.case][1]
 
-    @JvmField
+   // @JvmField
     var bluepreload = bluepreloads[pipeline.case][0]
 
-    @JvmField
+   // @JvmField
     var bluebackdrop = bluepreloads[pipeline.case][1]
 
-    @JvmField
+    //@JvmField
     var droptostack = Trajectory(if(isRed) redpreload.endpos else bluepreload.endpos, Pose())
 
 
-    @JvmField
+   // @JvmField
     var park = Trajectory(Pose(), Pose())
 
-    @JvmField
+   // @JvmField
     var failsafe = Trajectory(Pose(), Pose())
 
-    @JvmField
+    //_@JvmField
     var redpark = Trajectory(Pose(50.0, 110.0, 3 * PI / 2), Pose(-50.0, 110.0, 3 * PI / 2))
 }
