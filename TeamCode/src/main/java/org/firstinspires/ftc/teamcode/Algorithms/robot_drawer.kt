@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.Algorithms
 
 import org.firstinspires.ftc.teamcode.Variables.draw_vars.drawscale
-import org.firstinspires.ftc.teamcode.PurePursuit.purepursuit_vars.radius
+import org.firstinspires.ftc.teamcode.p2p.p2p_vars.radius
 import org.firstinspires.ftc.teamcode.Variables.system_funcs.localizer
 import org.firstinspires.ftc.teamcode.Variables.system_funcs.telemetryPacket
 import java.lang.Math.cos

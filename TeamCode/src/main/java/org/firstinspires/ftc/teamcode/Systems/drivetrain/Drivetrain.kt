@@ -115,11 +115,7 @@ class Drivetrain {
     }
 
     fun perurobotcentricdrive(forward: Double, strafe: Double, rotation: Double){
-        val denominator = max(1.0, forward + strafe + rotation).toDouble()
-        val heading = localizer.robotpose.heading
-        //var fwdpwr = forward*cos(heading) -strafe*sin(heading)
-       // var strafepwr = forward*sin(heading) +strafe*cos(heading)
-       // var rotationpwr = rotation
+        val denominator = max(1.0, forward + strafe + rotation)
 
         lfmotor.power = (forward + strafe - rotation) / denominator
         lbmotor.power = (forward - strafe - rotation) / denominator

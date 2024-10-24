@@ -10,12 +10,9 @@ import com.qualcomm.robotcore.hardware.configuration.LynxConstants
 import com.qualcomm.robotcore.util.ElapsedTime
 import org.firstinspires.ftc.robotcore.external.Telemetry
 import org.firstinspires.ftc.teamcode.Algorithms.quality_of_life_funcs.autoupdate_tp
-import org.firstinspires.ftc.teamcode.Autonomous.Pose
 import org.firstinspires.ftc.teamcode.CommandBase.Command
-import org.firstinspires.ftc.teamcode.CommandBase.commands
-import org.firstinspires.ftc.teamcode.Localizer.Localizer
 import org.firstinspires.ftc.teamcode.Localizer.ThreeWheelLocalizer
-import org.firstinspires.ftc.teamcode.PurePursuit.purepursuit
+import org.firstinspires.ftc.teamcode.p2p.p2p
 import org.firstinspires.ftc.teamcode.Systems.arm.Arm
 import org.firstinspires.ftc.teamcode.Systems.camera.Camera
 import org.firstinspires.ftc.teamcode.Systems.claws.Claws
@@ -24,7 +21,6 @@ import org.firstinspires.ftc.teamcode.Systems.drone.Drone_launcher
 import org.firstinspires.ftc.teamcode.Systems.intake.Intake
 import org.firstinspires.ftc.teamcode.Systems.slides.Slides
 import org.firstinspires.ftc.teamcode.Systems.ThreadedIMU
-import org.firstinspires.ftc.teamcode.Systems.camera.Pipeline
 import org.firstinspires.ftc.teamcode.Systems.camera.pipeline0
 import org.firstinspires.ftc.teamcode.Systems.colorsensor.ColorSensor
 //import org.firstinspires.ftc.teamcode.Systems.camera.Pipeline
@@ -53,7 +49,7 @@ object system_funcs {
     lateinit var localizer: ThreeWheelLocalizer
     lateinit var telemetryPacket: TelemetryPacket
     var firstopen: Boolean = true
-    lateinit var pp: purepursuit
+    lateinit var pp: p2p
     var currentcommand: Command? = null
     lateinit var sensor: ColorSensor
 
@@ -89,7 +85,7 @@ object system_funcs {
         init_systems()
         pipeline = pipeline0()
         camera = Camera("Webcam 1", OpenCvCameraRotation.UPRIGHT, 640, 480, pipeline, streaming = true, waitForOpen = true)
-        pp = purepursuit()
+        pp = p2p()
     }
 
     fun init_systems(){

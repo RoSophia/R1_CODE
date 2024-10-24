@@ -1,9 +1,9 @@
-package org.firstinspires.ftc.teamcode.PurePursuit
+package org.firstinspires.ftc.teamcode.p2p
 
 import com.acmerobotics.dashboard.config.Config
 
 @Config
- object purepursuit_vars {
+ object p2p_vars {
      @JvmField
      var radius: Double = 28.0
 }
